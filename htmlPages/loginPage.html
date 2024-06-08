@@ -1,0 +1,46 @@
+<html>
+  <h1>Log In</h1>
+  <body>
+    username = <input type="text" id ="username"/><br />
+    email = <input type="text" id="email"><br />
+    <button onclick="login()">Login</button>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const url = 'http://localhost:3000/auth/login';
+
+    async function login() {
+      const loginData= {
+        //pulling the data from the textboxes
+        username: document.getElementById('username').value,
+        email: document.getElementById('email').value
+      }
+      //checking the entered credentials
+      const response = await axios.post('http://localhost:3000/user',loginData);
+      const token = response.data.token;
+      console.log("Response:"+ response);
+      console.log("Token:"+ token);
+      localStorage.setItem('userToken', JSON.stringify(token));
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+      var allowed = false;
+      if (response.data.success)
+      {
+        allowed = await axios.get('http://localhost:3000/employee', { headers });
+        console.log(JSON.stringify(allowed.data));
+        console.log("allowed and response : " + allowed.data + " " + response.data.success);
+        location.href = 'http://localhost:3000/employee';
+      }
+
+      // if (allowed&&response){ //verifying the email and password and the token
+      //   //location.href='http://localhost:3000/employee';
+      // }
+      // else {
+      //   alert ("unauthorized!");
+      // }
+    }
+  </script>
+
+</html>

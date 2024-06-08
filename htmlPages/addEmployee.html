@@ -1,0 +1,36 @@
+<html>
+
+<body>
+    <h1>New Employee</h1>
+Employee ID = <input type="text" id="id" /><br /> <br />
+First Name = <input type="text" id="fname"><br /><br />
+Last Name = <input type="text" id="lname"><br /><br />
+Started To Work In = <input type="text" id="startyear" /><br /><br />
+Department Name = <input type="text" id="depname"><br /><br />
+
+<button onclick="saveNewEmployee()">Save and Confirm</button>
+<button onclick="backToLogin()">Cancel</button>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    async function backToLogin()
+    {
+        await axios.get('http://localhost:3000/user');
+        location.href = 'http://localhost:3000/';
+    }
+    async function saveNewEmployee(){
+        console.log("got to the add employee func on the html page");
+        const newEmployeeData = {
+            //pulling the data from the textboxes
+            employeeid: document.getElementById('id').value,
+            firstname: document.getElementById('fname').value,
+            lastname: document.getElementById('lname').value,
+            startyear: document.getElementById('startyear').value,
+            department: document.getElementById('depname').value
+        }
+        await axios.post('http://localhost:3000/employee/addEmployee' , newEmployeeData);
+    }
+    //here I will go to the employee controller and will get the relevant data 
+</script>
+</body>
+
+</html>

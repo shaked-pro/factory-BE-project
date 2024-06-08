@@ -1,0 +1,109 @@
+<html>
+  <body onload="getEmployees()">
+    <h1>Employees</h1>
+
+    <table id="mongoTable">
+      <thead>
+        <tr>
+          <th>Department Name</th><!--where key is department Id get the department name from DB-->
+          <th>Full Name</th>
+          <th>Shifts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be dynamically inserted here -->
+      </tbody>
+    </table>
+    <button onclick="logout()">Log-Out</button>
+    </br>
+    <button onclick="addEmployeeRedirect()">New Employee</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    console.log ("reached the script of the employee html");
+    async function tokenTest(){
+      const URL = "http://localhost:3000/employee";
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      };
+      await axios.get(URL, {headers});
+    }
+    async function getEmployees()
+    {
+      console.log('sending request to employeeController');
+      var employeeData;
+      let headers ={"collectemployeedata":"true"}
+      employeeData = await axios.get('http://localhost:3000/employee',{headers});
+      employeeData = employeeData.data;
+      console.log("employeeData:"+ typeof employeeData+"employeeData[1]=" +JSON.stringify(employeeData[1]));
+      var tableBody = document.querySelector("#mongoTable tbody");
+      generateTable(tableBody , employeeData);
+    }
+    async function generateTable(table, data) {
+        for (var i = 0; i < Object.keys(data).length; i++) {
+          var row = table.insertRow();
+          for (var key in data[i]) {
+            var cell = row.insertCell();
+            if (key === "fullName") {
+              let link = document.createElement("a");
+              link.href = "http://localhost:3000/employee";
+              link.textContent = data[i][key];
+              link.onclick = function (event) {//preventing th link from sending a regular request to the employees controller
+                event.preventDefault();
+                goToEditEmployeePage(link.textContent);
+              };
+              cell.appendChild(link);
+            }
+            else if (key === "Department_id")
+            {
+              console.log ("got to the department if")
+              //GET the department name instead.
+              let headers= {
+                "departmentid": data[i][key]
+              }
+              try{
+                let departmentName = await axios.get("http://localhost:3000/employee", { headers });//passed the department ID
+                departmentName = departmentName.data;
+                console.log ("department name on html:"+departmentName);
+                let link = document.createElement("a");
+                link.href = "http://localhost:3000/employee";
+                link.textContent = departmentName;
+                link.onclick = function (event) {//preventing th link from sending a regular request to the employees controller
+                  event.preventDefault();
+                  goToEditDepartmentPage(link.textContent);
+                };
+                cell.appendChild(link);
+              }
+              catch(error)
+              {
+                console.log("wasn't able to get department name"+error);
+              }
+            }
+            else {
+              cell.textContent = data[i][key];
+            }
+          }
+        }
+    }
+    async function logout()
+    {
+      console.log("got to the logout function");
+      await axios.get('http://localhost:3000/user');
+      location.href = 'http://localhost:3000/';
+    }
+    async function addEmployeeRedirect(){
+      console.log("got to the new employee redirect func");
+      location.href = 'http://localhost:3000/employee/addemployee' 
+    }
+    async function goToEditEmployeePage(name)
+    {
+      window.location.href = `http://localhost:3000/employee/editEmployee?name=${name}`;
+    }
+    async function goToEditDepartmentPage(departmentName)
+    {
+      window.location.href = `http://localhost:3000/departments/editDepartment?department=${departmentName}`;
+    }
+  </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Employee</title>
+</head>
+
+<body onload="getRelevantEmployeeData()">
+    <h1>Edit Employee</h1>
+    Employee ID = <input type="text" id="id" /><br /> <br />
+    First Name = <input type="text" id="firstName"><br /><br />
+    Started To Work In = <input type="text" id="year" /><br /><br />
+    Department ID = <input type="text" id="department"><br /><br />
+
+    <button onclick="changeData()">Save and Confirm</button>
+    <button onclick="deleteEmployee()">Delete Employee</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        async function getRelevantEmployeeData() { //presenting the selected employee on the form
+            let params = new URLSearchParams(window.location.search); // Getting the selected employee name
+            let currentEmployeeName = params.get('name');
+            console.log('Current Employee name = ' + currentEmployeeName);
+
+            if (!currentEmployeeName) {
+                console.error('Employee name not provided in the URL');
+                return;
+            }
+
+            let arrayFirstAndLastName = currentEmployeeName.split(" ");
+            let headers = {
+                'firstNameEmployee': arrayFirstAndLastName[0],
+                'lastNameEmployee': arrayFirstAndLastName[1]
+            };
+            console.log("My custom headers: " + headers.firstNameEmployee + " " + headers.lastNameEmployee);
+
+            try {
+                const response = await axios.get('http://localhost:3000/employee/editEmployee', { headers });
+                const currentEmployeeData = response.data;
+
+                document.getElementById('id').value = currentEmployeeData._id; // Placing the values
+                document.getElementById('firstName').value = currentEmployeeData.First_Name;
+                document.getElementById('year').value = currentEmployeeData.Start_Work_Year;
+                document.getElementById('department').value = currentEmployeeData.Department_id;
+            } catch (error) {
+                console.error('Error fetching employee data:', error);
+            }
+        }
+        async function changeData() //update function 
+        {
+            let params = new URLSearchParams(window.location.search);
+            let currentEmployeeName = params.get('name');
+            console.log('Current Employee name = ' + currentEmployeeName);
+            let arrayFirstAndLastName = currentEmployeeName.split(" ");
+            let lastName = arrayFirstAndLastName[1];
+
+            let headers= {
+            'originallastname' : lastName, 
+            'newId' : document.getElementById('id').value,  // getting the new values
+            'newFirst' : document.getElementById('firstName').value,
+            'newYear' : document.getElementById('year').value,
+            'newDep' : document.getElementById('department').value 
+            };
+            let updateResponse = await axios.post('http://localhost:3000/employee/editEmployee' , headers);
+            console.log("updated employee from html page : "+JSON.stringify(updateResponse.data));
+        }
+        async function deleteEmployee() //deletes an employee along with it's shifts
+        {
+            let params = new URLSearchParams(window.location.search);
+            let currentEmployeeName = params.get('name');
+            let headers={
+                'shiftsgetter': true,
+                'name':currentEmployeeName
+            }
+            let shiftobjects = axios.get('http://localhost:3000/employee/editEmployee', {headers});
+        }
+    </script>
+</body>
+
+</html>
