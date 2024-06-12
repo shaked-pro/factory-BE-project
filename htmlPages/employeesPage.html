@@ -32,39 +32,44 @@
     async function getEmployees()
     {
       console.log('sending request to employeeController');
-      var employeeData;
+      let employeeAndShiftsData;
       let headers ={"collectemployeedata":"true"}
-      employeeData = await axios.get('http://localhost:3000/employee',{headers});
-      employeeData = employeeData.data;
-      console.log("employeeData:"+ typeof employeeData+"employeeData[1]=" +JSON.stringify(employeeData[1]));
+      employeeAndShiftsData = await axios.get('http://localhost:3000/employee',{headers});
+      console.log(employeeAndShiftsData)
+      employeeAndShiftsData = employeeAndShiftsData.data;
+      console.log("employeeData:"+ typeof employeeAndShiftsData+"employeeData[1]=" +JSON.stringify(employeeAndShiftsData[1]));
       var tableBody = document.querySelector("#mongoTable tbody");
-      generateTable(tableBody , employeeData);
+      generateTable(tableBody , employeeAndShiftsData);
     }
-    async function generateTable(table, data) {
-        for (var i = 0; i < Object.keys(data).length; i++) {
+    async function generateTable(table, employeeAndShiftsData) {
+        for (var i = 0; i < Object.keys(employeeAndShiftsData).length; i++) {
           var row = table.insertRow();
-          for (var key in data[i]) {
+          for (var key in employeeAndShiftsData[i]) {
+            if (key == "_id" )
+            {
+              continue;
+            }
             var cell = row.insertCell();
             if (key === "fullName") {
               let link = document.createElement("a");
               link.href = "http://localhost:3000/employee";
-              link.textContent = data[i][key];
+              link.textContent = employeeAndShiftsData[i][key];
               link.onclick = function (event) {//preventing th link from sending a regular request to the employees controller
                 event.preventDefault();
                 goToEditEmployeePage(link.textContent);
               };
               cell.appendChild(link);
             }
-            else if (key === "Department_id")
+            else if (key === "Department_Id")
             {
               console.log ("got to the department if")
               //GET the department name instead.
               let headers= {
-                "departmentid": data[i][key]
+                "departmentid": employeeAndShiftsData[i][key]
               }
               try{
-                let departmentName = await axios.get("http://localhost:3000/employee", { headers });//passed the department ID
-                departmentName = departmentName.data;
+                // let departmentName = await axios.get("http://localhost:3000/employee", { headers });//passed the department ID
+                // departmentName = departmentName.employeeAndShiftsData;
                 console.log ("department name on html:"+departmentName);
                 let link = document.createElement("a");
                 link.href = "http://localhost:3000/employee";
@@ -81,7 +86,7 @@
               }
             }
             else {
-              cell.textContent = data[i][key];
+              cell.textContent = employeeAndShiftsData[i][key];
             }
           }
         }
