@@ -16,16 +16,13 @@ const getAllEmployees = async () => {
                 }
             },
             {
-                $project: { _id: 0, fullName: 1, Department_id: 1 }
+                $project: { _id: 1, fullName: 1, Department_id: 1 }
             }
         ]);
         return employees;
     }
     catch (error){
         console.log ("error fatching data from db: "+error);
-    }
-    finally{
-       // await client.close();
     }
 }
 
@@ -90,13 +87,14 @@ async function getShiftsByEmployeeId(employeeid)
 {
     console.log ("employee id from employee repo: "+employeeid);
     let shifts = await getShiftsByEmployee(employeeid);
-    deleteEmployee(employeeid,shifts);
+    //deleteEmployee(employeeid,shifts);
+    return (shifts);
 }
 
-async function deleteEmployee(employeeId , shifts)
-{
+// async function deleteEmployee(employeeId , shifts)
+// {
 
-}
+// }
 async function findEmployeesByDepIdAndDelete(depid)
 {
     let relevantEmployees = await Employee.deleteMany({ Department_id: depid });//will add an operation to update the shifts later
@@ -111,6 +109,12 @@ async function findEmployeesByDepIdAndDelete(depid)
         return false;
     }
 }
+async function getEmployeesOfDepartment(departmentId)
+{
+    let employees1 = await Employee.find({Department_id: departmentId})
+    console.log ("Repository :employees of department = "+JSON.stringify(employees1));
+    return employees1;
+}
 
 module.exports = {
     getAllEmployees,
@@ -119,5 +123,6 @@ module.exports = {
     updateEmployeeByName,
     addEmployee,
     getShiftsByEmployeeId,
-    findEmployeesByDepIdAndDelete
+    findEmployeesByDepIdAndDelete,
+    getEmployeesOfDepartment
 }

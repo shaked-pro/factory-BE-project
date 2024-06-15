@@ -8,29 +8,31 @@ const Employee = require(path.resolve('models/employeeModel'));
 async function getDepartmentNameByDepId(id)
 {
     const department = await Department.findById(id)
-    return department;
+    return department.Department_Name;
 }
 
-async function getDepartmentIdByDepartmentName(depName)
-{
-    try{
-        const relevantDep = await Department.findOne({ Department_Name: depName });
-        let depid = JSON.stringify(relevantDep._id);
-        console.log("dep id: "+depid);
-        return relevantDep._id;
-    }
-    catch(err)
-    {
-        console.log("couldn't find that department: "+ err);
-    }
-}
+// async function getDepartmentIdByDepartmentName(depName)
+// {
+//     try{
+//         const relevantDep = await Department.findOne({ Department_Name: depName });
+//         console.log ("repository : relevant dep :"+JSON.stringify(relevantDep));
+//         let depid = JSON.stringify(relevantDep._id);
+//         console.log("repository: dep id: "+depid);
+//         return relevantDep._id;
+//     }
+//     catch(err)
+//     {
+//         console.log("repository: couldn't find that department: "+ err);
+//     }
+// }
 
 async function getDepartmentByDepName(depname)
 {
     try {
-    const department = await Department.findOne({Department_Name: depname});
-    console.log ("relevant department from repository: "+department);
-    return department;
+        console.log (depname);
+        const department = await Department.findOne({Department_Name: depname});
+        console.log ("relevant department from repository: "+department);
+        return department;
     }
     catch(e)
     {
@@ -63,7 +65,7 @@ async function deleteDepartment(depid)
 
 module.exports = {
     getDepartmentNameByDepId,
-    getDepartmentIdByDepartmentName,
+   // getDepartmentIdByDepartmentName,
     getDepartmentByDepName,
     deleteDepartment
 }

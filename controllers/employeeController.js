@@ -6,6 +6,7 @@ const fs = require('fs');
 
 const employeeService = require('../services/employeeService');
 const commonUsage = require('../commonUsage');
+const { JsonWebTokenError } = require('jsonwebtoken');
 
 const mongoURL = 'mongodb://localhost:27017';
 
@@ -50,6 +51,12 @@ router.get('/', async (req,res) =>{
     console.log("department from controler :" + depName );
     return res.send(depName); 
   }
+  else if (headers["departmentfilter"]!=null){
+    console.log ("the department filter:" +headers["departmentfilter"]);
+    let filteredEmployees = await employeeService.FilterEmployeesByDep(JSON.stringify(headers["departmentfilter"]));
+    console.log ("controller: Filtered employees = "+JSON.stringify(filteredEmployees));
+    res.send(filteredEmployees);
+  }
   else 
   {
       console.log("reached here with the xmlhttprequest No");
@@ -66,10 +73,10 @@ router.get('/editEmployee', async (req, res) => {
       let data = await employeeService.getEmployeeDataToEdit(headers['firstnameemployee'], headers['lastnameemployee']);
       return res.send(data);
     }
-  else if (headers['shiftsgetter'])
-    {
-      let shifts= employeeService.getshiftsOfEmployee(headers['name']);
-    }
+  // else if (headers['shiftsgetter'])
+  //   {
+  //     let shifts= employeeService.getshiftsOfEmployee(headers['name']);
+  //   }
   const name = req.query.name;
   console.log (name);
   return res.sendFile(path.resolve('htmlPages/editEmployeePage.html'));

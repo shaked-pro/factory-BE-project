@@ -7,11 +7,9 @@ const { json } = require('express');
 async function getShiftsByEmployee(id)
 {
     try {
-        // Find all EmployeeShift documents for the given employeeId
-        const employeeShifts = await EmployeeShift.find({});
-        const shiftIds = employeeShifts.map(empShift => empShift.shift_id);
-        console.log ("shifts for selected employee : "+ JSON.stringify(shiftIds));
-        return shiftIds;
+        const employeeShifts = await EmployeeShift.find({"employee_id": id});
+        console.log ("employee shifts from repo : "+ JSON.stringify(employeeShifts));
+        return employeeShifts;
     } catch (error) {
         console.error('Error fetching shifts for employee:', error);
         throw error;
