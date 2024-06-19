@@ -1,10 +1,10 @@
 const express = require('express')
 const cors = require('cors');
 const connectDB = require('./config/db');
-const ejs = require('ejs');
 const employeeController = require('./controllers/employeeController');
 const usersController = require('./controllers/usersController');
 const departmentController = require ('./controllers/departmentController')
+const navigatorController = require ('./controllers/navigatorController');
 
 const app = express();
 const PORT = 3000;
@@ -12,16 +12,14 @@ const PORT = 3000;
 connectDB();
 
 
-//ejs
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
-
 //middlewares
 app.use(cors());
 app.use(express.json());
 app.get('/' , (req,res)=>{
   res.sendFile(__dirname + '/htmlPages/loginPage.html');
 });
+
+app.use('/navigation' , navigatorController);
 app.use('/user', usersController);
 app.use('/employee', employeeController);
 app.use('/employee/editEmployee', employeeController);

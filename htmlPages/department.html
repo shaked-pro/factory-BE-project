@@ -1,0 +1,125 @@
+<html>
+
+<body onload="getDepartments()">
+    <h1>Departments</h1>
+
+    <table id="mongoTable">
+        <thead>
+            <tr>
+                <th>Department Name</th>
+                <!--where key is department Id get the department name from DB-->
+                <th>Department Manager</th>
+                <th>Employees</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be dynamically inserted here -->
+        </tbody>
+    </table>
+    </br>
+    </br>
+    </br>
+    </br>
+    <button onclick="logout()">Log-Out</button>
+    </br>
+    <button onclick="addEmployeeRedirect()">New Employee</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        console.log("reached the script of the employee html");
+        // async function tokenTest(){   const URL = "http://localhost:3000/employee";
+        // const headers = {     'Authorization': `Bearer ${token}`,     'Accept':
+        // 'application/json'   };   await axios.get(URL, {headers}); }
+
+        /*DB MANAGEMENT FUNCTIONS*/
+
+        //getting all Departments from db
+        async function getDepartments() {
+            console.log('sending request to Department controller');
+            let departmentsData;
+            let headers = {
+                "departmentdatacollect": "true"
+            }
+            departmentsData = await axios.get('http://localhost:3000/departments', {headers});
+            departmentsData = departmentsData.data;
+            console.log("departmentData:" + typeof departmentsData + "departmentData[1]=" + JSON.stringify(departmentsData));
+
+            var tableBody = document.querySelector("#mongoTable tbody");
+            generateTable(tableBody, departmentsData);
+        }
+
+        //generating a table to put the data in
+        async function generateTable(table, data) {
+            table.innerHTML = ""; // Clear existing rows
+            for (var i = 0; i < Object.keys(data).length; i++) {
+                var row = table.insertRow();
+                for (var key in data[i]) {
+                    if (key === "fullName") {
+                        var cell = row.insertCell();
+                        let link = document.createElement("a");
+                        link.href = "http://localhost:3000/employee";
+                        link.textContent = (data[i][key]);
+                        link.onclick = function (
+                            event
+                            ) { //preventing th link from sending a regular request to the employees controller
+                            event.preventDefault();
+                            goToEditEmployeePage(link.textContent);
+                        };
+                        cell.appendChild(link);
+                    } else if (key === "_id") { 
+                        continue;
+                    } else if (key === "Department_id") {
+                        continue;
+                    } else if (key === "departmentName") {
+                        var cell = row.insertCell();
+                        let link = document.createElement("a");
+                        link.href = "http://localhost:3000/employee";
+                        link.textContent = data[i][key];
+                        link.onclick = function (
+                            event
+                            ) { //preventing th link from sending a regular request to the employees controller
+                            event.preventDefault();
+                            goToEditDepartmentPage(link.textContent);
+                        };
+                        cell.appendChild(link);
+                    } else if (key === "employees") {
+                        var cell = row.insertCell();
+                        cell.textContent = data[i][key];
+                    } else if (key === "Start_Work_Year") {
+                        continue;
+                    } else if (key === "First_Name" || key === "Last_Name") {
+                        continue;
+                    } else {
+                        var cell = row.insertCell();
+                        cell.textContent = data[i][key];
+                    }
+                }
+            }
+        }
+
+
+        /*REDIRECT FUNCTIONS*/
+
+        //Returning the user to the login screen
+        async function logout() {
+            console.log("got to the logout function");
+            await axios.get('http://localhost:3000/user');
+            location.href = 'http://localhost:3000/';
+        }
+        //Redirecting to new employee page
+        async function addEmployeeRedirect() {
+            console.log("got to the new employee redirect func");
+            location.href = 'http://localhost:3000/employee/addemployee'
+        }
+        //Redirecting to edit employee page
+        async function goToEditEmployeePage(name) {
+            window.location.href = `http://localhost:3000/employee/editEmployee?name=${name}`;
+        }
+        //Redirecting to edit department page
+        async function goToEditDepartmentPage(departmentName) {
+            window.location.href = `http://localhost:3000/departments/editDepartment?department=${departmentName}`;
+        }
+    </script>
+</body>
+
+</html>

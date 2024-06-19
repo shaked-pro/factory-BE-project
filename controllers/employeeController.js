@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
     res.send(filteredEmployees);
   }
   else {
-    console.log("reached here with the xmlhttprequest No");
+    console.log("reached here from the login page");
     return res.sendFile(path.resolve('htmlPages/employeesPage.html'));
   }
 });

@@ -11,7 +11,13 @@ const {getEmployeesOfDepartment} = require('../repositories/employeesRepository'
 async function getAllEmployeesToTable(){
   let Employees = await getAllEmployees();
   console.log("employees from service :" + JSON.stringify(Employees));
-  let EmployeesWithShifts = Employees.map(async (employee) => {
+  let employeesWithShifts = await addEmployeesToShiftAndDepartmentData(Employees);
+  return employeesWithShifts;
+}
+
+async function addEmployeesToShiftAndDepartmentData(Employees)
+{
+    let EmployeesWithShifts = Employees.map(async (employee) => {
     let shifts = await getShiftsByEmployeeId(employee._id);
     let departments = await getDepartmentNameByDepId(employee.Department_id);
     console.log("service:shifts for employee: " + JSON.stringify(shifts));
@@ -73,9 +79,10 @@ async function FilterEmployeesByDep(depName)
   console.log (JSON.stringify(departmentRequested));
   let depId = departmentRequested._id;
   console.log ("service: department id :"+depId);
-  let relevantData = await getEmployeesOfDepartment(depId);
-  console.log ("service: employees of department"+JSON.stringify(relevantData));
-  return relevantData;
+  let relevantEmployees = await getEmployeesOfDepartment(depId);
+  console.log ("service: employees of department"+JSON.stringify(relevantEmployees));
+  formattedEmployeesData = await addEmployeesToShiftAndDepartmentData(relevantEmployees);
+  return formattedEmployeesData;
 }
 
 module.exports={getAllEmployeesToTable ,

@@ -41,7 +41,7 @@
 
     /*DB MANAGEMENT FUNCTIONS*/
 
-    //getting the employees from db
+    //getting all employees from db
     async function getEmployees() {
       console.log('sending request to employeeController');
       let employeeAndShiftsData;
@@ -61,6 +61,7 @@
 
     //generating a table to put the data in
     async function generateTable(table, data) {
+      table.innerHTML = ""; // Clear existing rows
       for (var i = 0; i < Object.keys(data).length; i++) {
         var row = table.insertRow();
         for (var key in data[i]) {
@@ -68,7 +69,7 @@
             var cell = row.insertCell();
             let link = document.createElement("a");
             link.href = "http://localhost:3000/employee";
-            link.textContent = data[i][key];
+            link.textContent =(data[i][key]);
             link.onclick = function (
             event) { //preventing th link from sending a regular request to the employees controller
               event.preventDefault();
@@ -101,6 +102,14 @@
             var cell = row.insertCell();
             cell.textContent = data[i][key];
           }
+          else if (key === "Start_Work_Year")
+          {
+            continue;
+          }
+          else if (key === "First_Name" || key ==="Last_Name")
+          {
+            continue;
+          }
           else {
             var cell = row.insertCell();
             cell.textContent = data[i][key];
@@ -118,6 +127,9 @@
       console.log ("dropdown selection : "+selectedDepartment);
       let departmentEmployees =await axios.get ("http://localhost:3000/employee" , {headers});
       console.log (JSON.stringify(departmentEmployees));
+      departmentEmployees = departmentEmployees.data;
+      var tableBody = document.querySelector("#mongoTable tbody");
+      await generateTable(tableBody, departmentEmployees);
     }
 
     /*REDIRECT FUNCTIONS*/

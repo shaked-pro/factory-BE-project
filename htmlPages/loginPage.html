@@ -31,15 +31,9 @@
         allowed = await axios.get('http://localhost:3000/employee', { headers });
         console.log(JSON.stringify(allowed.data));
         console.log("allowed and response : " + allowed.data + " " + response.data.success);
-        location.href = 'http://localhost:3000/employee';
+        location.href = 'http://localhost:3000/navigation';
       }
 
-      // if (allowed&&response){ //verifying the email and password and the token
-      //   //location.href='http://localhost:3000/employee';
-      // }
-      // else {
-      //   alert ("unauthorized!");
-      // }
     }
   </script>
 

@@ -11,6 +11,13 @@ async function getDepartmentNameByDepId(id)
     return department.Department_Name;
 }
 
+async function getAllDeps()
+{
+    const departments = await Department.find({});
+    console.log ("All departments from department repo:" +departments);
+    return departments;
+}
+
 // async function getDepartmentIdByDepartmentName(depName)
 // {
 //     try{
@@ -67,5 +74,6 @@ module.exports = {
     getDepartmentNameByDepId,
    // getDepartmentIdByDepartmentName,
     getDepartmentByDepName,
-    deleteDepartment
+    deleteDepartment,
+    getAllDeps
 }

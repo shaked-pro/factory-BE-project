@@ -1,8 +1,7 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
-const ejs = require('ejs');
 const path = require('path');
 const fs = require('fs');
+
 
 const departmentService = require('../services/departmentService');
 const commonUsage = require('../commonUsage');
@@ -11,8 +10,17 @@ const router = express.Router();
 
 // the routs of the /departments
 router.get('/', async (req, res) => {
-    //here I will get all the departments from the db
-    console.log("ToDo");
+    let headers = await req.headers;
+    console.log (headers);
+    if (headers["departmentdatacollect"])
+    {
+        departments = await departmentService.getAllDepartmentsFromDB();
+        res.send(departments);
+    }
+    else 
+    {
+        res.sendFile(path.resolve('htmlPages/department.html'));
+    }
 });
 
 //the routs of the /departments/EditDepartment

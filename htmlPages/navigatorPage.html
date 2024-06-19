@@ -1,0 +1,23 @@
+<html>
+
+<body>
+    <h1>Welcome!</h1>
+
+
+    <button onclick="redirectToDepartmentsPage()">Department Page</button>
+    <button onclick="redirectToEmployeesPage()">Employees Page</button>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        async function redirectToDepartmentsPage()
+        {
+            window.location.href = '/departments';
+        }
+        async function redirectToEmployeesPage()
+        {   
+            window.location.href = '/employee';
+        }
+
+    </script>
+</body>
+
+</html>
