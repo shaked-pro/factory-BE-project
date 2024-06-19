@@ -48,54 +48,69 @@
             generateTable(tableBody, departmentsData);
         }
 
+        const addDeperatementRow =  async (row, rowData) => {
+            let departmentNameCell = row.insertCell();
+            departmentNameCell.textContent = rowData["Department_Name"]
+
+            let departmentManagerCell = row.insertCell();
+            departmentManagerCell.textContent = rowData["Department_Manager"]
+        }
+
         //generating a table to put the data in
         async function generateTable(table, data) {
             table.innerHTML = ""; // Clear existing rows
             for (var i = 0; i < Object.keys(data).length; i++) {
                 var row = table.insertRow();
-                for (var key in data[i]) {
-                    if (key === "fullName") {
-                        var cell = row.insertCell();
-                        let link = document.createElement("a");
-                        link.href = "http://localhost:3000/employee";
-                        link.textContent = (data[i][key]);
-                        link.onclick = function (
-                            event
-                            ) { //preventing th link from sending a regular request to the employees controller
-                            event.preventDefault();
-                            goToEditEmployeePage(link.textContent);
-                        };
-                        cell.appendChild(link);
-                    } else if (key === "_id") { 
-                        continue;
-                    } else if (key === "Department_id") {
-                        continue;
-                    } else if (key === "departmentName") {
-                        var cell = row.insertCell();
-                        let link = document.createElement("a");
-                        link.href = "http://localhost:3000/employee";
-                        link.textContent = data[i][key];
-                        link.onclick = function (
-                            event
-                            ) { //preventing th link from sending a regular request to the employees controller
-                            event.preventDefault();
-                            goToEditDepartmentPage(link.textContent);
-                        };
-                        cell.appendChild(link);
-                    } else if (key === "employees") {
-                        var cell = row.insertCell();
-                        cell.textContent = data[i][key];
-                    } else if (key === "Start_Work_Year") {
-                        continue;
-                    } else if (key === "First_Name" || key === "Last_Name") {
-                        continue;
-                    } else {
-                        var cell = row.insertCell();
-                        cell.textContent = data[i][key];
-                    }
+                console.log(data[i])
+                addDeperatementRow(row, data[i])
+                // for (var key in data[i]) {
+                //     if key == "Employess"{
+                //         for employee in data[i][key]{
+                //             var cell = row.insertCell();
+                //             cell.textContent = employee;
+                //         }
+                //     }
+                //     if (key === "fullName") {
+                //         var cell = row.insertCell();
+                //         let link = document.createElement("a");
+                //         link.href = "http://localhost:3000/employee";
+                //         link.textContent = (data[i][key]);
+                //         link.onclick = function (
+                //             event
+                //             ) { //preventing th link from sending a regular request to the employees controller
+                //             event.preventDefault();
+                //             goToEditEmployeePage(link.textContent);
+                //         };
+                //         cell.appendChild(link);
+                //     } else if (key === "_id") { 
+                //         continue;
+                //     } else if (key === "Department_id") {
+                //         continue;
+                //     } else if (key === "departmentName") {
+                //         var cell = row.insertCell();
+                //         let link = document.createElement("a");
+                //         link.href = "http://localhost:3000/employee";
+                //         link.textContent = data[i][key];
+                //         link.onclick = function (
+                //             event
+                //             ) { //preventing th link from sending a regular request to the employees controller
+                //             event.preventDefault();
+                //             goToEditDepartmentPage(link.textContent);
+                //         };
+                //         cell.appendChild(link);
+                //     } else if (key === "employees") {
+                //         var cell = row.insertCell();
+                //         cell.textContent = data[i][key];
+                //     } else if (key === "Start_Work_Year") {
+                //         continue;
+                //     } else if (key === "First_Name" || key === "Last_Name") {
+                //         continue;
+                //     } else {
+                //         var cell = row.insertCell();
+                //         cell.textContent = data[i][key];
+                //     }
                 }
             }
-        }
 
 
         /*REDIRECT FUNCTIONS*/
