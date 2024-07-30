@@ -14,6 +14,7 @@ const router = express.Router();
 // Entry point: http://localhost:3000/employee
 
 router.get('/', async (req, res) => {
+  console.log(`params: ${JSON.stringify(req.query)}`)
   let headers = await req.headers;
   console.log(headers);
   if (headers['authorization'] != null) {
@@ -30,6 +31,15 @@ router.get('/', async (req, res) => {
       console.log("not allowed");
     }
   }
+
+  if (req.query["department"]) {
+    let departmentFilter = req.query["department"];
+    console.log("the department filter: " + departmentFilter);
+    let filteredEmployees = await employeeService.FilterEmployeesByDep(departmentFilter);
+    console.log("controller: Filtered employees = " + JSON.stringify(filteredEmployees));
+    res.send(filteredEmployees);
+  }
+
   else if (headers['referer'] != null && headers['referer'].includes('http://localhost:3000/employee') && headers['editEmployeeReferer']) {
     return res.sendFile(path.resolve('htmlPages/editEmployeePage.html'));
     //need to add logic of sending the edit employee page the specific employee info.
@@ -44,12 +54,6 @@ router.get('/', async (req, res) => {
     let depName = await employeeService.getDepartmentName(headers["departmentid"]);
     console.log("department from controler :" + depName);
     return res.send(depName);
-  }
-  else if (headers["departmentfilter"] != null) {
-    console.log("the department filter:" + headers["departmentfilter"]);
-    let filteredEmployees = await employeeService.FilterEmployeesByDep(headers["departmentfilter"]);
-    console.log("controller: Filtered employees = " + JSON.stringify(filteredEmployees));
-    res.send(filteredEmployees);
   }
   else {
     console.log("reached here from the login page");

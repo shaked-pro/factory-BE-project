@@ -2,7 +2,7 @@
 const path = require('path');
 const Employee = require(path.resolve('models/employeeModel'));
 const axios = require('axios');
-const {MongoClient} =require('mongodb')
+const { MongoClient } = require('mongodb')
 const mongoose = require('mongoose');
 const { getDepartmentIdByDepartmentName } = require('../repositories/departmentRepository');
 const { getShiftsByEmployee } = require('../repositories/shiftRepository');
@@ -21,8 +21,8 @@ const getAllEmployees = async () => {
         ]);
         return employees;
     }
-    catch (error){
-        console.log ("error fatching data from db: "+error);
+    catch (error) {
+        console.log("error fatching data from db: " + error);
     }
 }
 
@@ -31,88 +31,74 @@ async function getEmployeeById(id) {
     return employee;
 }
 
-async function getEmployeeByName(firstName, lastName)
-{
+async function getEmployeeByName(firstName, lastName) {
     try {
         const employee = await Employee.findOne({ First_Name: firstName, Last_Name: lastName });
-        console.log ("employee returned to server from repo : "+ JSON.stringify(employee));
+        console.log("employee returned to server from repo : " + JSON.stringify(employee));
         return employee;
     } catch (error) {
         console.error('Error fetching employee by name:', error);
         throw error;
     }
-    
+
 }
 
-async function updateEmployeeByName(updateData,lastName)
-{
+async function updateEmployeeByName(updateData, lastName) {
     try {
         const update = await Employee.updateOne({ Last_Name: lastName },//using a field not available for editing to find the employee
-        {$set:{
-            _id: updateData.newId ,
-            First_Name : updateData.newfirst,
-            Start_Work_Year : updateData.newYear,
-            Department_id : updateData.newDep
-        }});
+            {
+                $set: {
+                    _id: updateData.newId,
+                    First_Name: updateData.newfirst,
+                    Start_Work_Year: updateData.newYear,
+                    Department_id: updateData.newDep
+                }
+            });
         return update.matchedCount > 0 ? 'Employee updated successfully' : null;
     }
-    catch(error){
-    console.log('Error updating employee');
-    throw error;
+    catch (error) {
+        console.log('Error updating employee');
+        throw error;
     }
 }
 
-async function addEmployee(employeeData)
-{
+async function addEmployee(employeeData) {
     let depName = employeeData.departmentName;
-    console.log("department name from employee repo: "+depName);
+    console.log("department name from employee repo: " + depName);
     let depId = await getDepartmentIdByDepartmentName(depName);
     let employeeToAdd = new Employee({
         _id: employeeData.id,
-        First_Name : employeeData.firstName,
-        Last_Name : employeeData.lastName,
+        First_Name: employeeData.firstName,
+        Last_Name: employeeData.lastName,
         Start_Work_Year: employeeData.year,
         Department_id: depId
     });
-    try{
+    try {
         const result = await employeeToAdd.save();
     }
-    catch (err)
-    {
-        console.log("couldn't add employee to DB: "+err);
+    catch (err) {
+        console.log("couldn't add employee to DB: " + err);
     }
-}
-
-async function getShiftsByEmployeeId(employeeid)
-{
-    console.log ("employee id from employee repo: "+employeeid);
-    let shifts = await getShiftsByEmployee(employeeid);
-    //deleteEmployee(employeeid,shifts);
-    return (shifts);
 }
 
 // async function deleteEmployee(employeeId , shifts)
 // {
 
 // }
-async function findEmployeesByDepIdAndDelete(depid)
-{
+async function findEmployeesByDepIdAndDelete(depid) {
     let relevantEmployees = await Employee.deleteMany({ Department_id: depid });//will add an operation to update the shifts later
-    if (relevantEmployees)
-        {
-            console.log ("relevant employees were deleted");
-            return true;
-        }
-    else 
-    {
-        console.log ("relevant employees weren't deleted");
+    if (relevantEmployees) {
+        console.log("relevant employees were deleted");
+        return true;
+    }
+    else {
+        console.log("relevant employees weren't deleted");
         return false;
     }
 }
-async function getEmployeesOfDepartment(departmentId)
-{
-    let employees1 = await Employee.find({Department_id: departmentId})
-    console.log ("Repository :employees of department = "+JSON.stringify(employees1));
+async function getEmployeesOfDepartment(departmentId) {
+    let employees1 = await Employee.find({ Department_id: departmentId })
+    console.log("Repository :employees of department = " + JSON.stringify(employees1));
     return employees1;
 }
 
@@ -122,7 +108,6 @@ module.exports = {
     getEmployeeByName,
     updateEmployeeByName,
     addEmployee,
-    getShiftsByEmployeeId,
     findEmployeesByDepIdAndDelete,
     getEmployeesOfDepartment
 }

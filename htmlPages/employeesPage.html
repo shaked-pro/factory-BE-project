@@ -121,11 +121,8 @@
     //Handeling the dropdown selection of the user
     async function handleDropdownChange() {
       let selectedDepartment = document.getElementById("dropdown").value;
-      let headers ={
-        "departmentfilter": selectedDepartment
-      }
       console.log ("dropdown selection : "+selectedDepartment);
-      let departmentEmployees =await axios.get ("http://localhost:3000/employee" , {headers});
+      let departmentEmployees =await axios.get (`http://localhost:3000/employee?department=${selectedDepartment}`);
       console.log (JSON.stringify(departmentEmployees));
       departmentEmployees = departmentEmployees.data;
       let tableBody = document.querySelector("#mongoTable tbody");
