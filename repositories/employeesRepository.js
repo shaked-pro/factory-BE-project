@@ -97,9 +97,9 @@ async function findEmployeesByDepIdAndDelete(depid) {
     }
 }
 async function getEmployeesOfDepartment(departmentId) {
-    let employees1 = await Employee.find({ Department_id: departmentId })
-    console.log("Repository :employees of department = " + JSON.stringify(employees1));
-    return employees1;
+    let employees = await Employee.find({ Department_id: departmentId })
+    console.log("Repository :employees of department = " + JSON.stringify(employees));
+    return employees.map(employee => employee._doc);
 }
 
 module.exports = {

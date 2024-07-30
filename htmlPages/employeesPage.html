@@ -85,7 +85,7 @@
           {
             continue;
           }
-          else if (key === "departmentName") {
+          else if (key === "employeedepartmentName") {
             let cell = row.insertCell();
             let link = document.createElement("a");
             link.href = "http://localhost:3000/employee";
@@ -96,7 +96,7 @@
                 goToEditDepartmentPage(link.textContent);
               };
              cell.appendChild(link);
-         }
+          }
           else if (key === "shift_id") 
           {
             let cell = row.insertCell();
