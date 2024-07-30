@@ -1,6 +1,5 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
-const ejs = require('ejs');
 const path = require('path');
 const fs = require('fs');
 

@@ -44,18 +44,18 @@
             departmentsData = departmentsData.data;
             console.log("departmentData:" + typeof departmentsData + "departmentData[1]=" + JSON.stringify(departmentsData));
 
-            var tableBody = document.querySelector("#mongoTable tbody");
+            let tableBody = document.querySelector("#mongoTable tbody");
             generateTable(tableBody, departmentsData);
         }
 
         //generating a table to put the data in
         async function generateTable(table, data) {
             table.innerHTML = ""; // Clear existing rows
-            for (var i = 0; i < Object.keys(data).length; i++) {
-                var row = table.insertRow();
-                for (var key in data[i]) {
+            for (let i = 0; i < Object.keys(data).length; i++) {
+                let row = table.insertRow();
+                for (let key in data[i]) {
                     if (key === "fullName") {
-                        var cell = row.insertCell();
+                        let cell = row.insertCell();
                         let link = document.createElement("a");
                         link.href = "http://localhost:3000/employee";
                         link.textContent = (data[i][key]);
@@ -71,7 +71,7 @@
                     } else if (key === "Department_id") {
                         continue;
                     } else if (key === "departmentName") {
-                        var cell = row.insertCell();
+                        let cell = row.insertCell();
                         let link = document.createElement("a");
                         link.href = "http://localhost:3000/employee";
                         link.textContent = data[i][key];
@@ -83,14 +83,14 @@
                         };
                         cell.appendChild(link);
                     } else if (key === "employees") {
-                        var cell = row.insertCell();
+                        let cell = row.insertCell();
                         cell.textContent = data[i][key];
                     } else if (key === "Start_Work_Year") {
                         continue;
                     } else if (key === "First_Name" || key === "Last_Name") {
                         continue;
                     } else {
-                        var cell = row.insertCell();
+                        let cell = row.insertCell();
                         cell.textContent = data[i][key];
                     }
                 }
