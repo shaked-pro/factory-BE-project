@@ -110,6 +110,10 @@
           {
             continue;
           }
+          else if (key === "__v")
+          {
+            continue;
+          }
           else {
             let cell = row.insertCell();
             cell.textContent = data[i][key];
