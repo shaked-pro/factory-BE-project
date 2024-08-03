@@ -37,9 +37,7 @@ async function addShiftsAndDepartmentToEmployees(employees, departmentName) {
     let shifts = await getShiftsByEmployee(employee._id);
     console.log("service:shifts for employee: " + JSON.stringify(shifts));
     let shiftIds = shifts.map(shift => shift.shift_id);
-    let employeeWithShifts = { "departmentName": departmentName, ...employee, "shifts": shiftIds };
-    console.log("service:employee with shifts and department: " + JSON.stringify(employeeWithShifts));
-    return employeeWithShifts;
+    return { "departmentName": departmentName, ...employee, "shifts": shiftIds };
   });
   employeesWithShifts = await Promise.all(employeesWithShifts);
   console.log("service:employees with shifts and department: " + JSON.stringify(employeesWithShifts));
