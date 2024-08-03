@@ -20,11 +20,11 @@
   </br>
   <label for="dropdown">Choose a department:</label>
   <select id="dropdown" onchange="handleDropdownChange()">
-    <option value="HR">HR</option>
-    <option value="Development">Development</option>
-    <option value="Operations">Operations</option>
-    <option value="Product">Product</option>
-    <option value="Management">Management</option>
+    <option value="660c12cd4902407727391ca8">HR</option>
+    <option value="65db0ee96ed2c80512f2040d">Development</option>
+    <option value="660438797d96d76f40a8e976">Operations</option>
+    <option value="660c13064902407727391cac">Product</option>
+    <option value="660c12ed4902407727391caa">Management</option>
   </select>
   </br>
   </br>
@@ -35,7 +35,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
     console.log("reached the script of the employee html");
-    // async function tokenTest(){   const URL = "http://localhost:3000/employee";
+    // async function tokenTest(){   const URL = "http://localhost:3000/employees";
     // const headers = {     'Authorization': `Bearer ${token}`,     'Accept':
     // 'application/json'   };   await axios.get(URL, {headers}); }
 
@@ -48,7 +48,7 @@
       let headers = {
         "collectemployeedata": "true"
       }
-      employeeAndShiftsData = await axios.get('http://localhost:3000/employee', {
+      employeeAndShiftsData = await axios.get('http://localhost:3000/employees', {
         headers
       });
       employeeAndShiftsData = employeeAndShiftsData.data;
@@ -68,7 +68,7 @@
           if (key === "fullName") {
             let cell = row.insertCell();
             let link = document.createElement("a");
-            link.href = "http://localhost:3000/employee";
+            link.href = "http://localhost:3000/employees";
             link.textContent =(data[i][key]);
             link.onclick = function (
             event) { //preventing th link from sending a regular request to the employees controller
@@ -88,7 +88,7 @@
           else if (key === "employeedepartmentName") {
             let cell = row.insertCell();
             let link = document.createElement("a");
-            link.href = "http://localhost:3000/employee";
+            link.href = "http://localhost:3000/employees";
             link.textContent = data[i][key];
             link.onclick = function (
               event) { //preventing th link from sending a regular request to the employees controller
@@ -122,7 +122,7 @@
     async function handleDropdownChange() {
       let selectedDepartment = document.getElementById("dropdown").value;
       console.log ("dropdown selection : "+selectedDepartment);
-      let departmentEmployees =await axios.get (`http://localhost:3000/employee?department=${selectedDepartment}`);
+      let departmentEmployees =await axios.get (`http://localhost:3000/employees?department=${selectedDepartment}`);
       console.log (JSON.stringify(departmentEmployees));
       departmentEmployees = departmentEmployees.data;
       let tableBody = document.querySelector("#mongoTable tbody");
@@ -134,17 +134,17 @@
     //Returning the user to the login screen
     async function logout() {
       console.log("got to the logout function");
-      await axios.get('http://localhost:3000/user');
+      await axios.get('http://localhost:3000/users');
       location.href = 'http://localhost:3000/';
     }
     //Redirecting to new employee page
     async function addEmployeeRedirect() {
       console.log("got to the new employee redirect func");
-      location.href = 'http://localhost:3000/employee/addemployee'
+      location.href = 'http://localhost:3000/employees/addemployees'
     }
     //Redirecting to edit employee page
     async function goToEditEmployeePage(name) {
-      window.location.href = `http://localhost:3000/employee/editEmployee?name=${name}`;
+      window.location.href = `http://localhost:3000/employees/editEmployee?name=${name}`;
     }
     //Redirecting to edit department page
     async function goToEditDepartmentPage(departmentName) {

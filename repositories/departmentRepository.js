@@ -47,6 +47,17 @@ async function getDepartmentByDepName(depname)
     }
 }
 
+async function getDepartmentByDepId(depid) {
+    try {
+        const department = await Department.findOne({ _id: depid });
+        console.log("relevant department from repository: " + department);
+        return department;
+    }
+    catch (e) {
+        console.log("wasn't able to get department from DB : " + e);
+    }
+}
+
 async function deleteDepartment(depid)
 {
     let employeeRepositoryRes = await employeeRepository.findEmployeesByDepIdAndDelete(depid)

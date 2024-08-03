@@ -17,7 +17,7 @@
       };
       //checking the entered credentials
       const response = await axios.post(
-        "http://localhost:3000/user",
+        "http://localhost:3000/users",
         loginData
       );
       const token = response.data.token;
@@ -30,14 +30,14 @@
       };
       let allowed = false;
       if (response.data.success) {
-        allowed = await axios.get("http://localhost:3000/employee", {
+        allowed = await axios.get("http://localhost:3000/employees", {
           headers,
         });
         console.log(JSON.stringify(allowed.data));
         console.log(
           "allowed and response : " + allowed.data + " " + response.data.success
         );
-        location.href = "http://localhost:3000/navigation";
+        location.href = "http://localhost:3000/navigations";
       }
     }
   </script>

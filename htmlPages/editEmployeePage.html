@@ -35,7 +35,7 @@
             console.log("My custom headers: " + headers.firstNameEmployee + " " + headers.lastNameEmployee);
 
             try {
-                const response = await axios.get('http://localhost:3000/employee/editEmployee', { headers });
+                const response = await axios.get('http://localhost:3000/employees/editEmployee', { headers });
                 const currentEmployeeData = response.data;
 
                 document.getElementById('id').value = currentEmployeeData._id; // Placing the values
@@ -61,7 +61,7 @@
             'newYear' : document.getElementById('year').value,
             'newDep' : document.getElementById('department').value 
             };
-            let updateResponse = await axios.post('http://localhost:3000/employee/editEmployee' , headers);
+            let updateResponse = await axios.post('http://localhost:3000/employees/editEmployee' , headers);
             console.log("updated employee from html page : "+JSON.stringify(updateResponse.data));
         }
         async function deleteEmployee() //deletes an employee along with it's shifts
@@ -72,7 +72,7 @@
                 'shiftsgetter': true,
                 'name':currentEmployeeName
             }
-            let shiftobjects = axios.get('http://localhost:3000/employee/editEmployee', {headers});
+            let shiftobjects = axios.get('http://localhost:3000/employees/editEmployee', {headers});
         }
     </script>
 </body>

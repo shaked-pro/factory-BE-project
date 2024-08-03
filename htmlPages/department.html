@@ -57,7 +57,7 @@
                     if (key === "fullName") {
                         let cell = row.insertCell();
                         let link = document.createElement("a");
-                        link.href = "http://localhost:3000/employee";
+                        link.href = "http://localhost:3000/employees";
                         link.textContent = (data[i][key]);
                         link.onclick = function (
                             event
@@ -73,7 +73,7 @@
                     } else if (key === "departmentName") {
                         let cell = row.insertCell();
                         let link = document.createElement("a");
-                        link.href = "http://localhost:3000/employee";
+                        link.href = "http://localhost:3000/employees";
                         link.textContent = data[i][key];
                         link.onclick = function (
                             event
@@ -103,17 +103,17 @@
         //Returning the user to the login screen
         async function logout() {
             console.log("got to the logout function");
-            await axios.get('http://localhost:3000/user');
+            await axios.get('http://localhost:3000/users');
             location.href = 'http://localhost:3000/';
         }
         //Redirecting to new employee page
         async function addEmployeeRedirect() {
             console.log("got to the new employee redirect func");
-            location.href = 'http://localhost:3000/employee/addemployee'
+            location.href = 'http://localhost:3000/employees/addemployee'
         }
         //Redirecting to edit employee page
         async function goToEditEmployeePage(name) {
-            window.location.href = `http://localhost:3000/employee/editEmployee?name=${name}`;
+            window.location.href = `http://localhost:3000/employees/editEmployee?name=${name}`;
         }
         //Redirecting to edit department page
         async function goToEditDepartmentPage(departmentName) {

@@ -19,10 +19,10 @@ app.get('/' , (req,res)=>{
   res.sendFile(__dirname + '/htmlPages/loginPage.html');
 });
 
-app.use('/navigation' , navigatorController);
-app.use('/user', usersController);
-app.use('/employee', employeeController);
-app.use('/employee/editEmployee', employeeController);
+app.use('/navigations' , navigatorController);
+app.use('/users', usersController);
+app.use('/employees', employeeController);
+app.use('/employees/editEmployee', employeeController);
 app.use('/departments', departmentController);
 app.use('/departments/editDepartment', departmentController);
 

@@ -11,7 +11,7 @@ const mongoURL = 'mongodb://localhost:27017';
 
 const router = express.Router();
 
-// Entry point: http://localhost:3000/employee
+// Entry point: http://localhost:3000/employees
 
 router.get('/', async (req, res) => {
   console.log(`params: ${JSON.stringify(req.query)}`)
@@ -40,11 +40,11 @@ router.get('/', async (req, res) => {
     res.send(filteredEmployees);
   }
 
-  else if (headers['referer'] != null && headers['referer'].includes('http://localhost:3000/employee') && headers['editEmployeeReferer']) {
+  else if (headers['referer'] != null && headers['referer'].includes('http://localhost:3000/employees') && headers['editEmployeeReferer']) {
     return res.sendFile(path.resolve('htmlPages/editEmployeePage.html'));
     //need to add logic of sending the edit employee page the specific employee info.
   }
-  else if (headers['collectemployeedata'] != null && headers['referer'] != null && headers['referer'].includes('http://localhost:3000/employee')) {
+  else if (headers['collectemployeedata'] != null && headers['referer'] != null && headers['referer'].includes('http://localhost:3000/employees')) {
     let data = await employeeService.getAllEmployeesToTable();
     console.log("employees from constroller :" + JSON.stringify(data[1]));
     return res.send(data);
