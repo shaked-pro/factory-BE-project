@@ -5,7 +5,7 @@ const { getAllEmployees } = require('../repositories/employeesRepository');
 const { getShiftsByEmployee } = require('../repositories/shiftRepository');
 const { getEmployeeByName } = require('../repositories/employeesRepository');
 const { updateEmployeeByName } = require('../repositories/employeesRepository');
-const { getDepartmentNameByDepId, getDepartmentByDepName } = require('../repositories/departmentRepository');
+const { getDepartmentNameByDepId, getDepartmentByDepId } = require('../repositories/departmentRepository');
 const { addEmployee } = require('../repositories/employeesRepository');
 const { getEmployeesOfDepartment } = require('../repositories/employeesRepository');
 
@@ -32,6 +32,7 @@ async function getAllEmployeesToTable() {//change name of func not to include ta
  * OUTPUT: boject( ...employee, "departmentName": departmentName, "shifts": shiftIds)
 */ 
 async function addShiftsAndDepartmentToEmployees(employees, departmentName) {
+  console.log (typeof(employees))
   let employeesWithShifts = employees.map(async (employee) => {
     let shifts = await getShiftsByEmployee(employee._id);
     console.log("service:shifts for employee: " + JSON.stringify(shifts));
@@ -42,7 +43,6 @@ async function addShiftsAndDepartmentToEmployees(employees, departmentName) {
   });
   employeesWithShifts = await Promise.all(employeesWithShifts);
   console.log("service:employees with shifts and department: " + JSON.stringify(employeesWithShifts));
-  console.log(`EmployeesWithShifts: ${typeof (employeesWithShifts)}`);
   return employeesWithShifts;
 }
 
@@ -71,19 +71,16 @@ async function newEmployee(employeeData) {
  * OUTPUT: object { ...employee, "departmentName": departmentName, "shifts": shiftIds }
 */ 
 async function FilterEmployeesByDep(depId) {
-  let depName = getDepartmentNameByDepId(depId)
-  console.log("service : department name : " + depName)
-  let departmentRequested = await getDepartmentByDepName(depId);
-  console.log(JSON.stringify(departmentRequested));
+  let depName = await getDepartmentNameByDepId(depId)
   let relevantEmployees = await getEmployeesOfDepartment(depId);
   console.log("service: employees of department: " + JSON.stringify(relevantEmployees));
-  relevantEmployeesWithName = relevantEmployees.map(async(employee)=>{
+  let relevantEmployeesWithName = relevantEmployees.map(async(employee)=>{
   let employeeFullName = await `${employee.First_Name} ${employee.Last_Name}`;
     return {
       ...employee, "fullName": employeeFullName
     }
   })
-  let filteredEmployeesWithFullName = Promise.all(relevantEmployeesWithName);
+  let filteredEmployeesWithFullName = await Promise.all(relevantEmployeesWithName);
   formattedEmployeesData = await addShiftsAndDepartmentToEmployees(filteredEmployeesWithFullName, depName);
   console.log("service: formatted employees data with shifts: " + JSON.stringify(formattedEmployeesData));
   return formattedEmployeesData;

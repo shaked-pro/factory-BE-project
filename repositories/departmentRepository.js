@@ -83,7 +83,7 @@ async function deleteDepartment(depid)
 
 module.exports = {
     getDepartmentNameByDepId,
-   // getDepartmentIdByDepartmentName,
+    getDepartmentByDepId,
     getDepartmentByDepName,
     deleteDepartment,
     getAllDeps
