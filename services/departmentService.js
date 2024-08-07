@@ -13,20 +13,27 @@ async function getDepartmentData (depname)
     return relevantDep;
 }
 
+/* this function is collecting the department name , manager name and employees of a department. 
+ * it organizes the data in objects she returns back to the controller 
+ * INPUT: NULL
+ * OUTPUT: object ("departmentName":department.Department_Name,"managerName":managerName,"employees":employeeIds,
+ * "departmentId":department._id,"managerId":department.Department_Manager)
+*/
 async function getAllDepartmentsFromDB()
 {
     let departments = await getAllDeps();
     let DepartmentWithEmployeesData =departments.map(async (department) => {
     let managerName = await getEmployeeById(department.Department_Manager);
+    managerName = managerName.fullName;
     let employees = await getEmployeesOfDepartment(department._id);
-    console.log("DepService: employees of department " + JSON.stringify(employees));
-    console.log ("DepService: Department Manager:" + JSON.stringify(managerName));
     let employeeIds = employees.map(employee => employee._id);
-    let DepartmentWithEmployeesData = { ...department ,"managername" : managerName, "employees": employeeIds };
-    return DepartmentWithEmployeesData;
+    return { "departmentName": department.Department_Name ,
+        "managerName" : managerName,
+        "employees": employeeIds ,
+        "departmentId" : department._id ,
+        "managerId" : department.Department_Manager };
   });
   DepartmentWithEmployeesData = await Promise.all(DepartmentWithEmployeesData);
-  console.log(`DepartmentWithEmployeesData: ${typeof (DepartmentWithEmployeesData)}`);
   return DepartmentWithEmployeesData;
 }
 

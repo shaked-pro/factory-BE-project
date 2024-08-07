@@ -27,7 +27,7 @@ const getAllEmployees = async () => {
 }
 
 async function getEmployeeById(id) {
-    const employee = await Employee.findById(id)
+    const employee = await Employee.findById(id);
     return employee;
 }
 

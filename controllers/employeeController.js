@@ -17,6 +17,8 @@ router.get('/', async (req, res) => {
   console.log(`params: ${JSON.stringify(req.query)}`)
   let headers = await req.headers;
   console.log(headers);
+
+  //auth functionality
   if (headers['authorization'] != null) {
     //accessing common to verify the token 
     const passedToken = headers['authorization'];
@@ -32,6 +34,7 @@ router.get('/', async (req, res) => {
     }
   }
 
+  //departmentFilter functionality
   if (req.query["department"]) {
     let departmentFilter = req.query["department"];
     console.log("the department filter: " + departmentFilter);
@@ -40,21 +43,14 @@ router.get('/', async (req, res) => {
     res.send(filteredEmployees);
   }
 
-  else if (headers['referer'] != null && headers['referer'].includes('http://localhost:3000/employees') && headers['editEmployeeReferer']) {
-    return res.sendFile(path.resolve('htmlPages/editEmployeePage.html'));
-    //need to add logic of sending the edit employee page the specific employee info.
-  }
-  else if (headers['collectemployeedata'] != null && headers['referer'] != null && headers['referer'].includes('http://localhost:3000/employees')) {
+  //employee table functionality
+  else if (req.query['getemployees']) {
     let data = await employeeService.getAllEmployeesToTable();
     console.log("employees from constroller :" + JSON.stringify(data[1]));
     return res.send(data);
   }
-  else if (headers['departmentid'] != null) {
-    console.log("get to the department if in the constroller");
-    let depName = await employeeService.getDepartmentName(headers["departmentid"]);
-    console.log("department from controler :" + depName);
-    return res.send(depName);
-  }
+
+  //redirect functionality
   else {
     console.log("reached here from the login page");
     return res.sendFile(path.resolve('htmlPages/employeesPage.html'));
@@ -64,18 +60,19 @@ router.get('/', async (req, res) => {
 //edit employee routs
 router.get('/editEmployee', async (req, res) => {
   let headers = await req.headers;
-  console.log(headers);
-  if (headers['firstnameemployee'] != null) {
-    let data = await employeeService.getEmployeeDataToEdit(headers['firstnameemployee'], headers['lastnameemployee']);
+  console.log (headers);
+
+  //redirect functionality
+  if (headers['referer'] != null && (headers['referer'].includes('http://localhost:3000/departments') || headers['referer']==='http://localhost:3000/employees'))
+  {
+    return res.sendFile(path.resolve('htmlPages/editEmployeePage.html'));
+  }
+
+  //get data of employee functionality
+  if (req.query["employeeid"] != null) {
+    let data = await employeeService.getEmployeeDataToEdit(req.query["employeeid"]);
     return res.send(data);
   }
-  // else if (headers['shiftsgetter'])
-  //   {
-  //     let shifts= employeeService.getshiftsOfEmployee(headers['name']);
-  //   }
-  const name = req.query.name;
-  console.log(name);
-  return res.sendFile(path.resolve('htmlPages/editEmployeePage.html'));
 });
 router.post('/editEmployee', async (req, res) => {
   let body = await req.body;

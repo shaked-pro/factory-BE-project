@@ -37,10 +37,7 @@
         async function getDepartments() {
             console.log('sending request to Department controller');
             let departmentsData;
-            let headers = {
-                "departmentdatacollect": "true"
-            }
-            departmentsData = await axios.get('http://localhost:3000/departments', {headers});
+            departmentsData = await axios.get('http://localhost:3000/departments');
             departmentsData = departmentsData.data;
             console.log("departmentData:" + typeof departmentsData + "departmentData[1]=" + JSON.stringify(departmentsData));
 
@@ -54,44 +51,35 @@
             for (let i = 0; i < Object.keys(data).length; i++) {
                 let row = table.insertRow();
                 for (let key in data[i]) {
-                    if (key === "fullName") {
+                    if (key === "managerName") {
                         let cell = row.insertCell();
                         let link = document.createElement("a");
                         link.href = "http://localhost:3000/employees";
                         link.textContent = (data[i][key]);
                         link.onclick = function (
                             event
-                            ) { //preventing th link from sending a regular request to the employees controller
+                            ) { //preventing the link from sending a regular request to the employees controller
                             event.preventDefault();
-                            goToEditEmployeePage(link.textContent);
+                            goToEditEmployeePage(data[i]["managerId"]);
                         };
                         cell.appendChild(link);
-                    } else if (key === "_id") { 
-                        continue;
-                    } else if (key === "Department_id") {
-                        continue;
                     } else if (key === "departmentName") {
                         let cell = row.insertCell();
                         let link = document.createElement("a");
-                        link.href = "http://localhost:3000/employees";
+                        link.href = `http://localhost:3000/departments/editDepartment?department=${data[i][key]}`; 
                         link.textContent = data[i][key];
                         link.onclick = function (
                             event
                             ) { //preventing th link from sending a regular request to the employees controller
                             event.preventDefault();
-                            goToEditDepartmentPage(link.textContent);
+                            goToEditDepartmentPage(data[i]["departmentId"]);
                         };
                         cell.appendChild(link);
                     } else if (key === "employees") {
                         let cell = row.insertCell();
                         cell.textContent = data[i][key];
-                    } else if (key === "Start_Work_Year") {
-                        continue;
-                    } else if (key === "First_Name" || key === "Last_Name") {
-                        continue;
                     } else {
-                        let cell = row.insertCell();
-                        cell.textContent = data[i][key];
+                        continue;
                     }
                 }
             }
@@ -112,12 +100,12 @@
             location.href = 'http://localhost:3000/employees/addemployee'
         }
         //Redirecting to edit employee page
-        async function goToEditEmployeePage(name) {
-            window.location.href = `http://localhost:3000/employees/editEmployee?name=${name}`;
+        async function goToEditEmployeePage(id) {
+            window.location.href = `http://localhost:3000/employees/editEmployee?employeeid=${id}`;
         }
         //Redirecting to edit department page
-        async function goToEditDepartmentPage(departmentName) {
-            window.location.href = `http://localhost:3000/departments/editDepartment?department=${departmentName}`;
+        async function goToEditDepartmentPage(id) {
+            window.location.href = `http://localhost:3000/departments/editDepartment?department=${id}`;
         }
     </script>
 </body>

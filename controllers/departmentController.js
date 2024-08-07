@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     let headers = await req.headers;
     console.log (headers);
-    if (headers["departmentdatacollect"])
+    if (headers['referer']!=null && headers['referer'].includes('http://localhost:3000/departments'))
     {
         departments = await departmentService.getAllDepartmentsFromDB();
         res.send(departments);

@@ -1,7 +1,7 @@
 const usersRepo = require('../repositories/usersRepository');
 const json = require('jsonfile');
 const mongoose = require('mongoose');
-const { getAllEmployees } = require('../repositories/employeesRepository');
+const { getAllEmployees, getEmployeeById } = require('../repositories/employeesRepository');
 const { getShiftsByEmployee } = require('../repositories/shiftRepository');
 const { getEmployeeByName } = require('../repositories/employeesRepository');
 const { updateEmployeeByName } = require('../repositories/employeesRepository');
@@ -44,8 +44,8 @@ async function addShiftsAndDepartmentToEmployees(employees, departmentName) {
   return employeesWithShifts;
 }
 
-async function getEmployeeDataToEdit(firstName, lastName) {
-  let employeeData = await getEmployeeByName(firstName, lastName)
+async function getEmployeeDataToEdit(empId) {
+  let employeeData = await getEmployeeById(empId);
   return employeeData;
 }
 

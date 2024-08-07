@@ -45,12 +45,10 @@
     async function getEmployees() {
       console.log('sending request to employeeController');
       let employeeAndShiftsData;
-      let headers = {
-        "collectemployeedata": "true"
-      }
-      employeeAndShiftsData = await axios.get('http://localhost:3000/employees', {
-        headers
-      });
+      // let headers = {
+      //   "collectemployeedata": "true"
+      // }
+      employeeAndShiftsData = await axios.get(`http://localhost:3000/employees?getemployees=${true}`);
       employeeAndShiftsData = employeeAndShiftsData.data;
       console.log(
         "employeeData:" + typeof employeeAndShiftsData + "employeeData[1]=" + JSON.stringify(employeeAndShiftsData)
@@ -73,7 +71,7 @@
             link.onclick = function (
             event) { //preventing th link from sending a regular request to the employees controller
               event.preventDefault();
-              goToEditEmployeePage(link.textContent);
+              goToEditEmployeePage(data[i]["_id"]);
             };
             cell.appendChild(link);
           }
@@ -93,7 +91,7 @@
             link.onclick = function (
               event) { //preventing th link from sending a regular request to the employees controller
                 event.preventDefault();
-                goToEditDepartmentPage(link.textContent);
+                goToEditDepartmentPage(data[i]["Department_id"]);
               };
              cell.appendChild(link);
           }
@@ -147,12 +145,12 @@
       location.href = 'http://localhost:3000/employees/addemployees'
     }
     //Redirecting to edit employee page
-    async function goToEditEmployeePage(name) {
-      window.location.href = `http://localhost:3000/employees/editEmployee?name=${name}`;
+    async function goToEditEmployeePage(id) {
+      window.location.href = `http://localhost:3000/employees/editEmployee?employeeid=${id}`;
     }
     //Redirecting to edit department page
-    async function goToEditDepartmentPage(departmentName) {
-      window.location.href = `http://localhost:3000/departments/editDepartment?department=${departmentName}`;
+    async function goToEditDepartmentPage(departmentid) {
+      window.location.href = `http://localhost:3000/departments/editDepartment?department=${departmentid}`;
     }
   </script>
 </body>

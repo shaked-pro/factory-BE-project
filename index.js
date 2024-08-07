@@ -3,7 +3,8 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const employeeController = require('./controllers/employeeController');
 const usersController = require('./controllers/usersController');
-const departmentController = require ('./controllers/departmentController')
+const departmentController = require ('./controllers/departmentController');
+//const shiftController = require('./controllers/shiftController');
 const navigatorController = require ('./controllers/navigatorController');
 
 const app = express();
@@ -21,6 +22,7 @@ app.get('/' , (req,res)=>{
 
 app.use('/navigations' , navigatorController);
 app.use('/users', usersController);
+//app.use('/shifts', shiftController);
 app.use('/employees', employeeController);
 app.use('/employees/editEmployee', employeeController);
 app.use('/departments', departmentController);

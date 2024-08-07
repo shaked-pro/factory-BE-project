@@ -18,25 +18,18 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         async function getRelevantEmployeeData() { //presenting the selected employee on the form
-            let params = new URLSearchParams(window.location.search); // Getting the selected employee name
-            let currentEmployeeName = params.get('name');
-            console.log('Current Employee name = ' + currentEmployeeName);
+            let params = new URLSearchParams(window.location.search); // Getting the selected employee id
+            let currentEmployeeId = params.get('employeeid');
+            console.log('Current Employee : ' + currentEmployeeId);
 
-            if (!currentEmployeeName) {
-                console.error('Employee name not provided in the URL');
+            if (!currentEmployeeId) {
+                console.error('Employee not provided in the URL');
                 return;
             }
 
-            let arrayFirstAndLastName = currentEmployeeName.split(" ");
-            let headers = {
-                'firstNameEmployee': arrayFirstAndLastName[0],
-                'lastNameEmployee': arrayFirstAndLastName[1]
-            };
-            console.log("My custom headers: " + headers.firstNameEmployee + " " + headers.lastNameEmployee);
-
             try {
-                const response = await axios.get('http://localhost:3000/employees/editEmployee', { headers });
-                const currentEmployeeData = response.data;
+                let response = await axios.get(`http://localhost:3000/employees/editEmployee?employeeid=${currentEmployeeId}`);
+                let currentEmployeeData = response.data;
 
                 document.getElementById('id').value = currentEmployeeData._id; // Placing the values
                 document.getElementById('firstName').value = currentEmployeeData.First_Name;
@@ -48,11 +41,13 @@
         }
         async function changeData() //update function 
         {
-            let params = new URLSearchParams(window.location.search);
-            let currentEmployeeName = params.get('name');
-            console.log('Current Employee name = ' + currentEmployeeName);
-            let arrayFirstAndLastName = currentEmployeeName.split(" ");
-            let lastName = arrayFirstAndLastName[1];
+            let params = new URLSearchParams(window.location.search); // Getting the selected employee id
+            let currentEmployeeId = params.get('employeeid');
+
+            let response = await axios.get(`http://localhost:3000/employees/editEmployee?employeeid=${currentEmployeeId}`);
+            let currentEmployeeData = response.data;
+            let lastName = currentEmployeeData.Last_Name;
+            console.log ("employeeLastName:" + lastName)
 
             let headers= {
             'originallastname' : lastName, 
@@ -64,16 +59,16 @@
             let updateResponse = await axios.post('http://localhost:3000/employees/editEmployee' , headers);
             console.log("updated employee from html page : "+JSON.stringify(updateResponse.data));
         }
-        async function deleteEmployee() //deletes an employee along with it's shifts
-        {
-            let params = new URLSearchParams(window.location.search);
-            let currentEmployeeName = params.get('name');
-            let headers={
-                'shiftsgetter': true,
-                'name':currentEmployeeName
-            }
-            let shiftobjects = axios.get('http://localhost:3000/employees/editEmployee', {headers});
-        }
+        // async function deleteEmployee() //deletes an employee along with it's shifts
+        // {
+        //     let params = new URLSearchParams(window.location.search);
+        //     let currentEmployeeName = params.get('name');
+        //     let headers={
+        //         'shiftsgetter': true,
+        //         'name':currentEmployeeName
+        //     }
+        //     let shiftobjects = axios.get('http://localhost:3000/employees/editEmployee', {headers});
+        // }
     </script>
 </body>
 
