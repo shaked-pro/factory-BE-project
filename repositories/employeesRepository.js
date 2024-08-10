@@ -5,7 +5,7 @@ const axios = require('axios');
 const { MongoClient } = require('mongodb')
 const mongoose = require('mongoose');
 const { getDepartmentIdByDepartmentName } = require('../repositories/departmentRepository');
-const { getShiftsByEmployee } = require('../repositories/shiftRepository');
+const { getShiftsByEmployee } = require('../repositories/shiftsRepository');
 
 const getAllEmployees = async () => {
     try {

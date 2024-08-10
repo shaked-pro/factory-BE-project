@@ -1,21 +1,45 @@
 <html>
+    <head>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </head>
     <title>Shifts Page</title>
     <body>
-        <h1>Shifts</h1></br>
-         <table id="mongoTable">
-    <thead>
-      <tr>
-        <th>Shift Id</th>
-        <!--where key is department Id get the department name from DB-->
-        <th>Shift date</th>
-        <th>hours</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Data will be dynamically inserted here -->
-    </tbody>
-  </table>
-  </br>
-  </br>
+      <h1>Shifts</h1></br>
+      <table id="mongoTable">
+        <thead>
+          <tr>
+            <th>Shift Id</th>
+            <!--where key is department Id get the department name from DB-->
+            <th>Shift date</th>
+            <th>hours</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be dynamically inserted here -->
+        </tbody>
+      </table>
+      </br>
+      </br>
+      <script lang="js">
+        async function getShifts() {
+          const response = await axios.get("http://localhost:3000/shifts", {
+            headers: { 'Accept': 'application/json' },
+          });
+          const shifts = response.data;
+          const table = document.getElementById("mongoTable");
+          const tbody = table.getElementsByTagName("tbody")[0];
+          shifts.forEach((shift) => {
+            const row = tbody.insertRow(-1);
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            cell1.innerHTML = shift.shiftId;
+            cell2.innerHTML = shift.shiftDate;
+            cell3.innerHTML = shift.hours;
+          });
+        }
+        getShifts();
+      </script>
     </body>
+
 </html>

@@ -1,13 +1,8 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
 const path = require('path');
-const fs = require('fs');
 
 const employeeService = require('../services/employeeService');
 const commonUsage = require('../commonUsage');
-const { JsonWebTokenError } = require('jsonwebtoken');
-
-const mongoURL = 'mongodb://localhost:27017';
 
 const router = express.Router();
 
@@ -60,11 +55,10 @@ router.get('/', async (req, res) => {
 //edit employee routs
 router.get('/editEmployee', async (req, res) => {
   let headers = await req.headers;
-  console.log (headers);
+  console.log(headers);
 
   //redirect functionality
-  if (headers['referer'] != null && (headers['referer'].includes('http://localhost:3000/departments') || headers['referer']==='http://localhost:3000/employees'))
-  {
+  if (headers['referer'] != null && (headers['referer'].includes('http://localhost:3000/departments') || headers['referer'] === 'http://localhost:3000/employees')) {
     return res.sendFile(path.resolve('htmlPages/editEmployeePage.html'));
   }
 

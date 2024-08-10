@@ -1,23 +1,21 @@
 <html>
-
-<body>
+  <body>
     <h1>Welcome!</h1>
-
 
     <button onclick="redirectToDepartmentsPage()">Department Page</button>
     <button onclick="redirectToEmployeesPage()">Employees Page</button>
+    <button onclick="redirectToShiftsPage()">Shifts Page</button>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        async function redirectToDepartmentsPage()
-        {
-            window.location.href = '/departments';
-        }
-        async function redirectToEmployeesPage()
-        {   
-            window.location.href = '/employees';
-        }
-
+      async function redirectToDepartmentsPage() {
+        window.location.href = "/departments";
+      }
+      async function redirectToEmployeesPage() {
+        window.location.href = "/employees";
+      }
+      async function redirectToShiftsPage() {
+        window.location.href = "/shifts";
+      }
     </script>
-</body>
-
+  </body>
 </html>
