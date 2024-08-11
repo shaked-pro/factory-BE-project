@@ -9,7 +9,6 @@
         <thead>
           <tr>
             <th>Shift Id</th>
-            <!--where key is department Id get the department name from DB-->
             <th>Shift date</th>
             <th>hours</th>
           </tr>
@@ -26,19 +25,32 @@
             headers: { 'Accept': 'application/json' },
           });
           const shifts = response.data;
-          const table = document.getElementById("mongoTable");
-          const tbody = table.getElementsByTagName("tbody")[0];
-          shifts.forEach((shift) => {
-            const row = tbody.insertRow(-1);
-            const cell1 = row.insertCell(0);
-            const cell2 = row.insertCell(1);
-            const cell3 = row.insertCell(2);
-            cell1.innerHTML = shift.shiftId;
-            cell2.innerHTML = shift.shiftDate;
-            cell3.innerHTML = shift.hours;
-          });
+          let tableBody = document.querySelector("#mongoTable tbody");
+          generateTable(tableBody, shifts);
         }
-        getShifts();
+        async function generateTable(table, data) {
+          table.innerHTML = ""; // Clear existing rows
+          for (let i = 0; i < Object.keys(data).length; i++) {
+            let row = table.insertRow();
+            for (let key in data[i]) {
+              let cell = row.insertCell();
+              cell.setAttribute("contenteditable", "true");
+              let link = document.createElement("a");
+              cell.textContent = data[i][key];
+            }
+          }
+        }
+        //   shifts.forEach((shift) => {
+        //     const row = tbody.insertRow(-1);
+        //     const cell1 = row.insertCell(0);
+        //     const cell2 = row.insertCell(1);
+        //     const cell3 = row.insertCell(2);
+        //     cell1.innerHTML = shift.shiftId;
+        //     cell2.innerHTML = shift.shiftDate;
+        //     cell3.innerHTML = shift.hours;
+        //   });
+        // }
+        // getShifts();
       </script>
     </body>
 
