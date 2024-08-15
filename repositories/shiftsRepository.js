@@ -18,7 +18,7 @@ async function getAllShifts() {
         const allShifts = await Shift.find({});
         return allShifts;
     } catch (error) {
-        console.error('Error fetching all shifts:', error);
+        console.error('Repository: Error fetching all shifts:', error);
         throw error;
     }
 }

@@ -14,7 +14,9 @@ router.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, '../htmlPages/shiftsPage.html'));
   }
   else {
-    res.send(await getShiftsTable());
+    let shifts = await getShiftsTable();
+    console.log ("controller: shifts I got:" + JSON.stringify(shifts));
+    res.send(shifts);
   }
 
 });

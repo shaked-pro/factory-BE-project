@@ -18,21 +18,18 @@
     <script>
         async function getRelevantDepartmentData() {
             let params = new URLSearchParams(window.location.search); // Getting the selected department name
-            let departmentName = params.get('department');
-            console.log('Department Name = ' + departmentName);
+            let department = params.get('departmentId');
+            console.log('Department id = ' + department);
 
-            if (!departmentName) {
+            if (!department) {
                 console.error('the department was not provided in the URL');
                 return;
             }
 
-            let headers = {
-                'depname': departmentName,
-            };
-
             try {
-                const response = await axios.get('http://localhost:3000/departments/editDepartment', { headers });
+                const response = await axios.get(`http://localhost:3000/departments/editDepartment?department=${department}`);
                 const departmentData = response.data;
+                console.log ("html:Department data :" + response.data);
                 console.log (departmentData._id);
             
                 document.getElementById('id').value = departmentData._id; // Placing the values
@@ -42,21 +39,18 @@
                 console.error('Error fetching Department data: '+ error);
             }
         }
-        // async function changeData() {
-        //     let params = new URLSearchParams(window.location.search);
-        //     let departmentName = params.get('department');
-        //     console.log('department name = ' + departmentName);
-
-        //     let headers = {
-        //         'departmentname': departmentName,
-        //         'newId': document.getElementById('id').value,  // getting the new values
-        //         'newFirst': document.getElementById('firstName').value,
-        //         'newYear': document.getElementById('year').value,
-        //         'newDep': document.getElementById('department').value
-        //     };
-        //     let updateResponse = await axios.post('http://localhost:3000/employees/editEmployee', headers);
-        //     console.log("updated employee from html page : " + JSON.stringify(updateResponse.data));
-        // }
+        async function changeData() {
+            let params = new URLSearchParams(window.location.search);
+            let departmentid= params.get('departmentId');
+           
+            let updateData = {
+                'newId':document.getElementById('id').value,  // getting the new values
+                'managerId': document.getElementById('manager').value,
+                'DepartmentName': document.getElementById('name').value
+            };
+            let updateResponse = await axios.put(`http://localhost:3000/departments/editDepartment?updateDepartmentId=${departmentid}`, updateData);
+            console.log("updated Department from html page : " + JSON.stringify(updateResponse.data));
+        }
          async function DeleteDep() {
                 let params = new URLSearchParams(window.location.search);
                 let departmentId = document.getElementById('id').value;

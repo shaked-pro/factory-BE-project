@@ -1,18 +1,20 @@
 const shiftsRepo = require('../repositories/shiftsRepository');
 
-// Import the repository module
 
 // Define the getShifts function
 async function getShiftsTable() {
   try {
-    // Call the repository function to get shifts
-    const shifts = await shiftsRepo.getAllShifts();
+    let shifts = await shiftsRepo.getAllShifts();
     console.log("shifts from service : " + JSON.stringify(shifts));
-
-    // Return the shifts to the caller
-    return shifts;
+    shiftsWithHours = shifts.map(async(shift)=>{
+      let plainShift = shift.toObject ? shift.toObject() : { ...shift };
+      let shiftHours = `${plainShift.Starting_Hour} - ${plainShift.Ending_Hour}`;
+      return { ...plainShift, "hours": shiftHours };
+    })
+    let shiftsData = await Promise.all(shiftsWithHours);
+    console.log ("service:formatted shifts:"+shiftsData);
+    return shiftsData;
   } catch (error) {
-    // Handle any errors that occur during the process
     console.error('Error getting shifts:', error);
     throw error;
   }

@@ -3,7 +3,7 @@
       <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     </head>
     <title>Shifts Page</title>
-    <body>
+    <body  onload="getShifts()">
       <h1>Shifts</h1></br>
       <table id="mongoTable">
         <thead>
@@ -11,6 +11,7 @@
             <th>Shift Id</th>
             <th>Shift date</th>
             <th>hours</th>
+            <th>employees</th>
           </tr>
         </thead>
         <tbody>
@@ -22,9 +23,9 @@
       <script lang="js">
         async function getShifts() {
           const response = await axios.get("http://localhost:3000/shifts", {
-            headers: { 'Accept': 'application/json' },
+            headers: { 'Accept': 'application/json' }
           });
-          const shifts = response.data;
+          let shifts = response.data;
           let tableBody = document.querySelector("#mongoTable tbody");
           generateTable(tableBody, shifts);
         }
@@ -33,9 +34,16 @@
           for (let i = 0; i < Object.keys(data).length; i++) {
             let row = table.insertRow();
             for (let key in data[i]) {
+              if (key === 'Starting_Hour' || key == 'Ending_Hour')
+              {
+                continue;
+              }
+              // else if (key === 'Date')
+              // {
+              //   data[i][Key] = data[i][key].toISOString().split('T')[0];
+              // }
               let cell = row.insertCell();
               cell.setAttribute("contenteditable", "true");
-              let link = document.createElement("a");
               cell.textContent = data[i][key];
             }
           }

@@ -25,11 +25,11 @@ router.get('/', async (req, res) => {
 
 //the routs of the /departments/EditDepartment
 router.get('/editDepartment',async (req,res)=>{
-    let headers = await req.headers;
-    console.log (headers);
-    if (headers['depname']!=null)
+    console.log ("controller: got to the get request of the department data");
+    console.log(req.query['department'])
+    if (req.query['department']!=null)
         {
-            let departmentData =await departmentService.getDepartmentData(headers['depname']);
+        let departmentData = await departmentService.getDepartmentDataById(req.query['department']);
             if (departmentData!=null)
                 {
                     res.send( departmentData);
@@ -59,6 +59,13 @@ router.delete('/editDepartment' , async(req,res)=>
     {
         console.log ("controller: department id was not sent!");
         res.send(false);
+    }
+})
+
+router.put('/editDepartment' , async(req,res)=>{
+    if (req.query['updateDepartmentId'])
+    {
+        console.log (req.body);
     }
 })
 
