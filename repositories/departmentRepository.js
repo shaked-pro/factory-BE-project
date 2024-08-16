@@ -18,20 +18,24 @@ async function getAllDeps()
     return departments;
 }
 
-// async function getDepartmentIdByDepartmentName(depName)
-// {
-//     try{
-//         const relevantDep = await Department.findOne({ Department_Name: depName });
-//         console.log ("repository : relevant dep :"+JSON.stringify(relevantDep));
-//         let depid = JSON.stringify(relevantDep._id);
-//         console.log("repository: dep id: "+depid);
-//         return relevantDep._id;
-//     }
-//     catch(err)
-//     {
-//         console.log("repository: couldn't find that department: "+ err);
-//     }
-// }
+async function updateDepartmentByDepId(updateData, id) {
+    try {
+        const update = await Department.updateOne({ _id: id },//using a field not available for editing to find the employee
+            {
+                $set: {
+                    _id: id,
+                    Department_Manager: updateData.managerId,
+                    Department_Name : updateData.departmentName
+                    // Department_id: updateData.newDep
+                }
+            });
+        return update.matchedCount > 0 ? 'Employee updated successfully' : null;
+    }
+    catch (error) {
+        console.log('Error updating employee');
+        throw error;
+    }
+}
 
 async function getDepartmentByDepName(depname)
 {
@@ -85,6 +89,7 @@ module.exports = {
     getDepartmentNameByDepId,
     getDepartmentByDepId,
     getDepartmentByDepName,
+    updateDepartmentByDepId,
     deleteDepartment,
     getAllDeps
 }

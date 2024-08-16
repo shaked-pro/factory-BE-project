@@ -1,7 +1,8 @@
+const { json } = require('express');
 const { getAllDeps } = require('../repositories/departmentRepository');
 //const { getDepartmentByDepName } = require('../repositories/departmentRepository');
 const { deleteDepartment } = require('../repositories/departmentRepository')
-const { getDepartmentByDepId } = require('../repositories/departmentRepository')
+const { getDepartmentByDepId, updateDepartmentByDepId } = require('../repositories/departmentRepository')
 const { getEmployeesOfDepartment, getEmployeeById } = require('../repositories/employeesRepository')
 
 // async function getDepartmentData(depname) { //turn into depId
@@ -10,29 +11,17 @@ const { getEmployeesOfDepartment, getEmployeeById } = require('../repositories/e
 //     return relevantDep;
 // }
 
-async function getDepartmentDataById(depId) { //turn into depId
+async function getDepartmentDataById(depId) { 
     let relevantDep = await getDepartmentByDepId(depId);
     console.log("relevant department from service : " + JSON.stringify(relevantDep));
     return relevantDep;
 }
 
-async function updateEmployeeByName(updateData, lastName) {
-    try {
-        const update = await Employee.updateOne({ Last_Name: lastName },//using a field not available for editing to find the employee
-            {
-                $set: {
-                    _id: updateData.newId,
-                    First_Name: updateData.newfirst,
-                    Start_Work_Year: updateData.newYear,
-                    Department_id: updateData.newDep
-                }
-            });
-        return update.matchedCount > 0 ? 'Employee updated successfully' : null;
-    }
-    catch (error) {
-        console.log('Error updating employee');
-        throw error;
-    }
+async function updateDepartmentData(updateData, depId)
+{
+    upadtedDepartment = await updateDepartmentByDepId(updateData, depId);
+    console.log ("service: updated Department:"+JSON.stringify(upadtedDepartment));
+    return upadtedDepartment;
 }
 
 /* this function is collecting the department name , manager name and employees of a department. 
@@ -68,5 +57,6 @@ async function deleteDepartmentByDepId(depid) {
 module.exports = {
     getDepartmentDataById,
     deleteDepartmentByDepId,
-    getAllDepartmentsFromDB
+    getAllDepartmentsFromDB,
+    updateDepartmentData
 }

@@ -65,7 +65,9 @@ router.delete('/editDepartment' , async(req,res)=>
 router.put('/editDepartment' , async(req,res)=>{
     if (req.query['updateDepartmentId'])
     {
-        console.log (req.body);
+        let departmentId = req.query['updateDepartmentId'];
+        let updateData = req.body;
+        await departmentService.updateDepartmentData(updateData,departmentId);
     }
 })
 

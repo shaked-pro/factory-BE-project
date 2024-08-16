@@ -46,7 +46,7 @@
             let updateData = {
                 'newId':document.getElementById('id').value,  // getting the new values
                 'managerId': document.getElementById('manager').value,
-                'DepartmentName': document.getElementById('name').value
+                'departmentName': document.getElementById('name').value
             };
             let updateResponse = await axios.put(`http://localhost:3000/departments/editDepartment?updateDepartmentId=${departmentid}`, updateData);
             console.log("updated Department from html page : " + JSON.stringify(updateResponse.data));
