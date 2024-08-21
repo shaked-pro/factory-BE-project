@@ -12,6 +12,7 @@
             <th>Shift date</th>
             <th>hours</th>
             <th>employees</th>
+            <th>Options</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +21,16 @@
       </table>
       </br>
       </br>
+      <div id="allocationModal" class="modal"></div>
+      <span class="close">&times;</span>
+      <h3>Allocate Employee to Shift</h3>
+        <select id="employeesDropDown">
+          <!-- Options will be populated here -->
+        </select>
+      </div>
+      </br>
+      </br>
+          <button onclick="submitEmployeeAllocation()">Allocate</button>
       <script lang="js">
         async function getShifts() {
           const response = await axios.get("http://localhost:3000/shifts", {
@@ -38,27 +49,48 @@
               {
                 continue;
               }
-              // else if (key === 'Date')
-              // {
-              //   data[i][Key] = data[i][key].toISOString().split('T')[0];
-              // }
+              else if (key === 'Date')
+              {
+                continue;
+              }
+              else if (key ==='employees')
+              {
+                let cell = row.insertCell();
+                cell.setAttribute("contenteditable", "true");
+                cell.textContent = data[i][key];
+                let buttonCell = row.insertCell(); // New cell for the button
+                let button = document.createElement('button');
+                button.textContent = 'Allocate employee to shift'; // Button text
+                button.onclick = function () {
+                  allocateEmployeeToSihft(data[i]._id);
+                };
+                buttonCell.appendChild(button);
+                continue;
+              }
               let cell = row.insertCell();
               cell.setAttribute("contenteditable", "true");
               cell.textContent = data[i][key];
             }
           }
         }
-        //   shifts.forEach((shift) => {
-        //     const row = tbody.insertRow(-1);
-        //     const cell1 = row.insertCell(0);
-        //     const cell2 = row.insertCell(1);
-        //     const cell3 = row.insertCell(2);
-        //     cell1.innerHTML = shift.shiftId;
-        //     cell2.innerHTML = shift.shiftDate;
-        //     cell3.innerHTML = shift.hours;
-        //   });
-        // }
-        // getShifts();
+
+        async function allocateEmployeeToSihft(shiftId)
+        {
+          console.log (shiftId);
+          let employeesDropDown = document.getElementById("employeesDropDown");
+          employees = await axios.get(`http://localhost:3000/shifts?idOfShift=${shiftId}`,
+          {headers: { 'Accept': 'application/json' }})
+          console.log(JSON.stringify(employees.data));
+          employees = employees.data;
+          let dropdown = document.getElementById("employeesDropDown");
+          dropdown.innerHTML = "";
+          employees.forEach(employee => {
+            let option = document.createElement("option");
+            option.value = employee.idEmployee;
+            option.textContent = employee.nameEmployee;
+            dropdown.appendChild(option);
+          });
+        }
       </script>
     </body>
 

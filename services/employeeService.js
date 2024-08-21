@@ -25,7 +25,7 @@ async function getAllEmployeesToTable() {//change name of func not to include ta
 
 /* gets employee objects and creates new objects containing their department name and shifts
  * INPUT: employees (objects) , departmentName(string) 
- * OUTPUT: boject( ...employee, "departmentName": departmentName, "shifts": shiftIds)
+ * OUTPUT: object( ...employee, "departmentName": departmentName, "shifts": shiftIds)
 */
 async function addShiftsAndDepartmentToEmployees(employees, departmentName) {
   console.log(typeof (employees))

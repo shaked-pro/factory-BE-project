@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const { getShiftsTable } = require('../services/shiftsService');
+const { getShiftsTable, getEmployeesToAllocationDropDown } = require('../services/shiftsService');
+
 
 const router = express.Router();
 
@@ -13,10 +14,17 @@ router.get('/', async (req, res) => {
   if (acceptHeader.includes('text/html')) {
     res.sendFile(path.join(__dirname, '../htmlPages/shiftsPage.html'));
   }
-  else {
+  else if (!req.query["idOfShift"]){
     let shifts = await getShiftsTable();
     console.log ("controller: shifts I got:" + JSON.stringify(shifts));
     res.send(shifts);
+  }
+  else 
+  {
+    let shift = req.query["idOfShift"];
+    let employeeNamesSAndId = await getEmployeesToAllocationDropDown(shift);
+    console.log (JSON.stringify(employeeNamesSAndId));
+    res.send(employeeNamesSAndId);
   }
 
 });

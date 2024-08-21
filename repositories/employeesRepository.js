@@ -1,7 +1,6 @@
 //here we will get the employee data from the DB.
 const path = require('path');
 const Employee = require(path.resolve('models/employeeModel'));
-const axios = require('axios');
 const { MongoClient } = require('mongodb')
 const mongoose = require('mongoose');
 const { getDepartmentIdByDepartmentName } = require('../repositories/departmentRepository');
@@ -104,10 +103,10 @@ async function getEmployeesOfDepartment(departmentId) {
 
 module.exports = {
     getAllEmployees,
-    getEmployeeById,
     getEmployeeByName,
     updateEmployeeByName,
     addEmployee,
     findEmployeesByDepIdAndDelete,
-    getEmployeesOfDepartment
+    getEmployeesOfDepartment,
+    getEmployeeById
 }
