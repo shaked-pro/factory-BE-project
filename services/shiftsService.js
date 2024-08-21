@@ -1,7 +1,10 @@
 const shiftsRepo = require('../repositories/shiftsRepository');
-const employeeRepo = require('../repositories/employeesRepository');
 
-// Define the getShifts function
+/* This function is returning objects containing the shift data. These objects will go to 
+ * the frontend to be presented in a table
+ * INPUT: NULL
+ * OUTPUT: object {shift plainshift , datetime modifiedDate , string hours , employee shiftEmployees}
+ */ 
 async function getShiftsTable() {
   try {
     let shifts = await shiftsRepo.getAllShifts();
@@ -22,6 +25,12 @@ async function getShiftsTable() {
   }
 }
 
+/* This function is returning objects containing employee full name and employee id to the frontend. These objects
+ * will be used in the feature allowing to allocate/assign employee to a shift.
+ * INPUT: (objectId) shift
+ * OUTPUT: object {string nameEmployee , objectId idEmployee}
+ */ 
+
 async function getEmployeesToAllocationDropDown(shift)
 {
   let employees = await shiftsRepo.getEmployeeOfOtherShiftsByShiftId(shift);
@@ -35,6 +44,10 @@ async function getEmployeesToAllocationDropDown(shift)
   return employeesData;
 }
 
+/* This function returns employees of a specific shift.
+ * INPUT: objectId shiftId
+ * OUTPUT: Employee employees
+ */ 
 async function getEmployeeNamesForShifts(shiftId)
 {
   let employees = await shiftsRepo.getEmployeeByShiftId(shiftId);

@@ -40,11 +40,20 @@ async function addShiftsAndDepartmentToEmployees(employees, departmentName) {
   return employeesWithShifts;
 }
 
+/* This function returns the employee data by the employee id
+ * INPUT: objectId empId
+ * OUTPUT: Employee employeedata
+ */ 
 async function getEmployeeDataToEdit(empId) {
   let employeeData = await getEmployeeById(empId);
   return employeeData;
 }
 
+/* This function receives new data array for an employee and sends it to the employee repository
+ * for the employee to be updated. 
+ * INPUT: array updateData
+ * OUTPUT: Employee updatedEmployee
+ */ 
 async function updateEmployee(updateData) {
   let lastName = updateData.originalLastName;
   console.log("originalLastName in the service: " + lastName);
@@ -54,6 +63,11 @@ async function updateEmployee(updateData) {
   return updatedEmployee;
 }
 
+/* This function receives array of data for a new employee to be added and sends it to the 
+ * employee repository for the operation to be complete.
+ * INPUT: array employeeData
+ * OUTPUT: NULL
+ */ 
 async function newEmployee(employeeData) {
   console.log("new employee data from service : " + JSON.stringify(employeeData));
   await addEmployee(employeeData);//sending the new employee data to the employee repository

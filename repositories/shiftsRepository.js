@@ -4,6 +4,10 @@ const employeeRepository = require(path.resolve('repositories/employeesRepositor
 const EmployeeShift = require(path.resolve('models/shiftEmployeeModel'));
 const Shift = require(path.resolve('models/shiftModel'));
 
+/* This function gets all the shifts of a specific employee given the employee's id.
+ * INPUT: objectId id
+ * OUTPUT: Shift[]
+ */
 async function getShiftsByEmployee(id) {
     try {
         const employeeShifts = await EmployeeShift.find({ "employee_id": id });
@@ -15,6 +19,10 @@ async function getShiftsByEmployee(id) {
     }
 }
 
+/* This function gets all the employee's full names of a specific shift given the shift's id.
+ * INPUT: objectId shiftId
+ * OUTPUT: Employee.fullName[] names
+ */
 async function getEmployeeByShiftId(shiftId)
 {
     let employeesByShifts = await EmployeeShift.find({"shift_id": shiftId})
@@ -31,20 +39,13 @@ async function getEmployeeByShiftId(shiftId)
 /* This function is used for allocating new employees to given shift. This function brings the 
  * Available employees (those who dont already belong to said shift) to the frontend
  * INPUT: (objectid)shiftId
- * OUTPUT: {}
+ * OUTPUT: Employee[]
  */
 async function getEmployeeOfOtherShiftsByShiftId(shiftId) {
     let exclusiveEmployeeIds = await EmployeeShift.find({ shift_id: { $ne: shiftId } }).distinct('employee_id'); //to avoid duplicates
     let employeesOfOtherShifts = await Employee.find({ _id: { $in: exclusiveEmployeeIds } })
     console.log("employees of other shifts" + JSON.stringify(employeesOfOtherShifts));
     return employeesOfOtherShifts;
-    // let names = employeesByShifts.map(async (employee) => {
-    //     let employeeFullName = await getEmployeeByEmployeeId(employee.employee_id);
-    //     employeeFullName = `${employeeFullName.First_Name} ${employeeFullName.Last_Name}`;
-    //     return employeeFullName;
-    // })
-    // names = await Promise.all(names);
-    // return names;
 }
 
 async function getEmployeeByEmployeeId(id)
