@@ -3,8 +3,9 @@ const path = require('path');
 const Employee = require(path.resolve('models/employeeModel'));
 const { MongoClient } = require('mongodb')
 const mongoose = require('mongoose');
-const { getDepartmentIdByDepartmentName } = require('../repositories/departmentRepository');
+const { getDepartmentByDepName } = require('../repositories/departmentRepository');
 const { getShiftsByEmployee } = require('../repositories/shiftsRepository');
+const { ObjectId } = require('mongodb');
 
 const getAllEmployees = async () => {
     try {
@@ -64,7 +65,7 @@ async function updateEmployeeByName(updateData, lastName) {
 async function addEmployee(employeeData) {
     let depName = employeeData.departmentName;
     console.log("department name from employee repo: " + depName);
-    let depId = await getDepartmentIdByDepartmentName(depName);
+    let depId = await getDepartmentByDepName(depName);
     let employeeToAdd = new Employee({
         _id: employeeData.id,
         First_Name: employeeData.firstName,

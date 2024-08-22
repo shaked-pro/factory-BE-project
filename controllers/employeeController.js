@@ -91,7 +91,7 @@ router.post('/editEmployee', async (req, res) => {
 });
 
 //add Employee routs
-router.post('/addEmployee', async (req, res) => {
+router.post('/addemployees', async (req, res) => {
   let body = await req.body;
   console.log(body);
   if (body['employeeid'] != null) {
@@ -111,7 +111,7 @@ router.post('/addEmployee', async (req, res) => {
     return;
   }
 });
-router.get('/addEmployee', async (req, res) => {
+router.get('/addemployees', async (req, res) => {
   let body = await req.body;
   console.log(body);
   return res.sendFile(path.resolve('htmlPages/addEmployee.html'));
