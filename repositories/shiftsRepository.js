@@ -42,18 +42,34 @@ async function getEmployeeByShiftId(shiftId)
  * OUTPUT: Employee[]
  */
 async function getEmployeeOfOtherShiftsByShiftId(shiftId) {
-    let exclusiveEmployeeIds = await EmployeeShift.find({ shift_id: { $ne: shiftId } }).distinct('employee_id'); //to avoid duplicates
-    let employeesOfOtherShifts = await Employee.find({ _id: { $in: exclusiveEmployeeIds } })
-    console.log("employees of other shifts" + JSON.stringify(employeesOfOtherShifts));
-    return employeesOfOtherShifts;
+    console.log ("shift id from repo: "+shiftId);
+    let employeeOfGivenShift = await EmployeeShift.find({ shift_id: shiftId }).distinct('employee_id');
+    let employeesOfOtherShifts = await Employee.find({
+        _id: { $nin: employeeOfGivenShift }
+    }).distinct('_id');
+    employeesOfOtherShifts = employeesOfOtherShifts.map(async(employee)=>{
+        let employeeObject = getEmployeeByEmployeeId(employee);
+        return employeeObject;
+    })
+    employeeObjects = await Promise.all(employeesOfOtherShifts)
+    console.log(JSON.stringify(employeeObjects))
+    return employeeObjects;
 }
 
+/* This function returns an employee according to the employee id
+ * INPUT: (objectid) id
+ * OUTPUT: Employee
+ */
 async function getEmployeeByEmployeeId(id)
 {
     const employee = await Employee.findById(id);
     return employee;
 }
 
+/* This functions acccesses the DB and gets all the shifts and returns them to the service
+ * INPUT: NULL
+ * OUTPUT: Shift[]
+ */
 async function getAllShifts() {
     try {
         const allShifts = await Shift.find({});

@@ -24,7 +24,7 @@
       <div id="allocationModal" class="modal"></div>
       <span class="close">&times;</span>
       <h3>Allocate Employee to Shift</h3>
-        <select id="employeesDropDown">
+        <select id="employeesDropDown"></select> <!--onchange="handleDropdownChange()"> -->
           <!-- Options will be populated here -->
         </select>
       </div>
@@ -74,6 +74,12 @@
           }
         }
 
+        /* This function is activated when clicking on the "allocate employees" button next to a shift.
+         * This function is presenting the relevant employees that can be allocated into the dropdown menu 
+         * at the bottom of the page
+         * INPUT: objectId shiftId
+         * OUTPUT: Null
+         */
         async function allocateEmployeeToSihft(shiftId)
         {
           console.log (shiftId);
@@ -91,6 +97,11 @@
             dropdown.appendChild(option);
           });
         }
+
+        // async function submitEmployeeAllocation(shiftId)
+        // {
+
+        // }
       </script>
     </body>
 

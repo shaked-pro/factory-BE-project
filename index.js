@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/htmlPages/loginPage.html');
 });
 
-app.use('/navigations', navigatorController);
+app.use('/home', navigatorController);
 app.use('/users', usersController);
 app.use('/shifts', shiftController);
 app.use('/employees', employeeController);
