@@ -80,10 +80,26 @@ async function getAllShifts() {
     }
 }
 
+async function allocateEmployee(employeeId , shiftId) {
+    console.log ("assigning employee to shift")
+    let allocatedDocument = new EmployeeShift({
+        employee_id: employeeId,
+        shift_id: shiftId
+    });
+    try {
+        const result = await allocatedDocument.save();
+        return result;
+    }
+    catch (err) {
+        console.log("couldn't assign employee to shift " + err);
+    }
+}
+
 module.exports = {
     getShiftsByEmployee,
     getAllShifts,
     getEmployeeByShiftId,
     getEmployeeByEmployeeId,
-    getEmployeeOfOtherShiftsByShiftId
+    getEmployeeOfOtherShiftsByShiftId,
+    allocateEmployee
 }

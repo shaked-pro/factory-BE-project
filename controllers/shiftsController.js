@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { getShiftsTable, getEmployeesToAllocationDropDown } = require('../services/shiftsService');
+const { getShiftsTable, getEmployeesToAllocationDropDown, performEmployeeAllocation } = require('../services/shiftsService');
 
 
 const router = express.Router();
@@ -28,5 +28,11 @@ router.get('/', async (req, res) => {
   }
 
 });
+
+router.post('/', async (req,res)=>{
+  data = await req.body;
+  console.log ("alloc data from controller:"+JSON.stringify(data));
+  await performEmployeeAllocation(data);
+})
 
 module.exports = router;

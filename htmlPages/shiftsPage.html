@@ -27,6 +27,9 @@
         <select id="employeesDropDown"></select> <!--onchange="handleDropdownChange()"> -->
           <!-- Options will be populated here -->
         </select>
+      </br>
+      </br>
+        shift ID: <input type="text" id="shiftIdInput" /><br /> <br />
       </div>
       </br>
       </br>
@@ -84,6 +87,8 @@
         {
           console.log (shiftId);
           let employeesDropDown = document.getElementById("employeesDropDown");
+          let shiftIdInput = document.getElementById("shiftIdInput");
+          shiftIdInput.value = shiftId;
           employees = await axios.get(`http://localhost:3000/shifts?idOfShift=${shiftId}`,
           {headers: { 'Accept': 'application/json' }})
           console.log(JSON.stringify(employees.data));
@@ -98,10 +103,19 @@
           });
         }
 
-        // async function submitEmployeeAllocation(shiftId)
-        // {
-
-        // }
+        async function submitEmployeeAllocation()
+        {
+          let shiftIdInput = document.getElementById("shiftIdInput");
+          shiftIdInput = shiftIdInput.value;
+          let employeeToAlloc = document.getElementById("employeesDropDown");
+          employeeToAlloc = employeeToAlloc.value;
+          let allocatedData= {
+            shift: shiftIdInput,
+            employee: employeeToAlloc
+          }
+          axios.post('http://localhost:3000/shifts', allocatedData);
+          //TODO: call generate table with the new data
+        }
       </script>
     </body>
 

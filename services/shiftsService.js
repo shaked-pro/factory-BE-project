@@ -54,7 +54,20 @@ async function getEmployeeNamesForShifts(shiftId)
   return employees;
 }
 
+/* This function passes the info of the employee and shift for the repository 
+ * where the employee selected will be allocated to the shift passed
+ * INPUT: objectId employeeId , objectId shiftId
+ * OUTPUT: 
+ */
+async function performEmployeeAllocation(data)
+{
+  let shiftId = data.shift;
+  let employeeId = data.employee;
+  let result  = await shiftsRepo.allocateEmployee(employeeId, shiftId);
+  console.log ("shifts service:"+result);
+}
 module.exports = {
   getShiftsTable,
-  getEmployeesToAllocationDropDown
+  getEmployeesToAllocationDropDown,
+  performEmployeeAllocation
 };
