@@ -114,7 +114,7 @@
             employee: employeeToAlloc
           }
           axios.post('http://localhost:3000/shifts', allocatedData);
-          //TODO: call generate table with the new data
+          getShifts();
         }
       </script>
     </body>

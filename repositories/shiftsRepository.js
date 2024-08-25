@@ -3,6 +3,7 @@ const Employee = require(path.resolve('models/employeeModel'));
 const employeeRepository = require(path.resolve('repositories/employeesRepository'));
 const EmployeeShift = require(path.resolve('models/shiftEmployeeModel'));
 const Shift = require(path.resolve('models/shiftModel'));
+const mongoose = require('mongoose');
 
 /* This function gets all the shifts of a specific employee given the employee's id.
  * INPUT: objectId id
@@ -82,7 +83,9 @@ async function getAllShifts() {
 
 async function allocateEmployee(employeeId , shiftId) {
     console.log ("assigning employee to shift")
+    let newId = new mongoose.Types.ObjectId();
     let allocatedDocument = new EmployeeShift({
+        _id: newId,
         employee_id: employeeId,
         shift_id: shiftId
     });
