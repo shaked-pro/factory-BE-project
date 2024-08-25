@@ -1,6 +1,11 @@
 <html>
     <head>
       <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <style>
+        .modal {
+          border: 1px solid #fff;
+        }
+      </style>
     </head>
     <title>Shifts Page</title>
     <body  onload="getShifts()">
@@ -22,18 +27,23 @@
       </br>
       </br>
       <div id="allocationModal" class="modal"></div>
-      <span class="close">&times;</span>
       <h3>Allocate Employee to Shift</h3>
-        <select id="employeesDropDown"></select> <!--onchange="handleDropdownChange()"> -->
+        <select id="employeesDropDown"></select> 
           <!-- Options will be populated here -->
         </select>
       </br>
       </br>
-        shift ID: <input type="text" id="shiftIdInput" /><br /> <br />
+        shift ID: <input type="text" id="shiftIdInputAlloc" readonly/><br /> <br />
+        <button onclick="submitEmployeeAllocation()">Allocate</button>
       </div>
-      </br>
-      </br>
-          <button onclick="submitEmployeeAllocation()">Allocate</button>
+      
+      <div id="updateModal" class="modal">
+          <h3>Update shift</h3></br>
+          Shift ID: <input type="text" id="shiftIdInputUpdate" readonly/><br /> <br />
+          Shift Date: <input type="text" id="shiftDateInputUpdate" /><br /> <br />
+          Shift Starting Hour (24h format): <input type="text" id="shiftStartInputUpdate" /><br /> <br />
+          Shift Starting Hour (24h format) <input type="text" id="shiftEndInputUpdate" /><br /> <br />
+      </div>  
       <script lang="js">
         async function getShifts() {
           const response = await axios.get("http://localhost:3000/shifts", {
@@ -59,19 +69,24 @@
               else if (key ==='employees')
               {
                 let cell = row.insertCell();
-                cell.setAttribute("contenteditable", "true");
                 cell.textContent = data[i][key];
-                let buttonCell = row.insertCell(); // New cell for the button
-                let button = document.createElement('button');
-                button.textContent = 'Allocate employee to shift'; // Button text
-                button.onclick = function () {
+                let allocbuttonCell = row.insertCell(); // New cell for the button
+                let allocbutton = document.createElement('button');
+                allocbutton.textContent = 'Allocate employee to shift'; // Button text
+                allocbutton.onclick = function () {
                   allocateEmployeeToSihft(data[i]._id);
                 };
-                buttonCell.appendChild(button);
+                allocbuttonCell.appendChild(allocbutton);
+                let updatebuttonCell = row.insertCell(); // New cell for the button
+                let updatebutton = document.createElement('button');
+                updatebutton.textContent = 'Update shift'; // Button text
+                updatebutton.onclick = function () {
+                  presentDataForUpdateShift(data[i]._id,data[i].Date , data[i].Starting_Hour , data[i].Ending_Hour);
+                };
+                updatebuttonCell.appendChild(updatebutton);
                 continue;
               }
               let cell = row.insertCell();
-              cell.setAttribute("contenteditable", "true");
               cell.textContent = data[i][key];
             }
           }
@@ -87,7 +102,7 @@
         {
           console.log (shiftId);
           let employeesDropDown = document.getElementById("employeesDropDown");
-          let shiftIdInput = document.getElementById("shiftIdInput");
+          let shiftIdInput = document.getElementById("shiftIdInputAlloc");
           shiftIdInput.value = shiftId;
           employees = await axios.get(`http://localhost:3000/shifts?idOfShift=${shiftId}`,
           {headers: { 'Accept': 'application/json' }})
@@ -103,6 +118,12 @@
           });
         }
 
+        /* This function is responsible for assigning employees to their shifts by sending the relevant info 
+         * to be updated in the server. After the operation is complete the function calles the onload function 
+         * of this page again so that the updated info will be presented in the page.
+         * INPUT: NULL
+         * OUTPUT: NULL
+         */
         async function submitEmployeeAllocation()
         {
           let shiftIdInput = document.getElementById("shiftIdInput");
@@ -115,6 +136,31 @@
           }
           axios.post('http://localhost:3000/shifts', allocatedData);
           getShifts();
+        }
+
+        async function presentDataForUpdateShift(shiftId,shiftDate,shiftStartingHour,shiftEndingHour)
+        {
+          console.log (shiftId);
+          let shiftIdInputUpdate = document.getElementById("shiftIdInputUpdate");
+          shiftIdInputUpdate.value = shiftId;
+          let shiftDateInputUpdate = document.getElementById("shiftDateInputUpdate");
+          shiftDateInputUpdate.value = shiftDate;
+          let shiftStartInputUpdate = document.getElementById("shiftStartInputUpdate");
+          shiftStartInputUpdate.value = shiftStartingHour;
+          let shiftEndInputUpdate = document.getElementById("shiftEndInputUpdate");
+          shiftEndInputUpdate.value = shiftEndingHour;
+          // employees = await axios.get(`http://localhost:3000/shifts?idOfShift=${shiftId}`,
+          // {headers: { 'Accept': 'application/json' }})
+          // console.log(JSON.stringify(employees.data));
+          // employees = employees.data;
+          // let dropdown = document.getElementById("employeesDropDown");
+          // dropdown.innerHTML = "";
+          // employees.forEach(employee => {
+          //   let option = document.createElement("option");
+          //   option.value = employee.idEmployee;
+          //   option.textContent = employee.nameEmployee;
+          //   dropdown.appendChild(option);
+          // });
         }
       </script>
     </body>
