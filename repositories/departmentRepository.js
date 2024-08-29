@@ -29,10 +29,10 @@ async function updateDepartmentByDepId(updateData, id) {
                     // Department_id: updateData.newDep
                 }
             });
-        return update.matchedCount > 0 ? 'Employee updated successfully' : null;
+        return update.matchedCount > 0 ? 'Department updated successfully' : null;
     }
     catch (error) {
-        console.log('Error updating employee');
+        console.log('Error updating department');
         throw error;
     }
 }

@@ -42,8 +42,18 @@
           Shift ID: <input type="text" id="shiftIdInputUpdate" readonly/><br /> <br />
           Shift Date: <input type="text" id="shiftDateInputUpdate" /><br /> <br />
           Shift Starting Hour (24h format): <input type="text" id="shiftStartInputUpdate" /><br /> <br />
-          Shift Starting Hour (24h format) <input type="text" id="shiftEndInputUpdate" /><br /> <br />
+          Shift Ending Hour (24h format) <input type="text" id="shiftEndInputUpdate" /><br /> <br />
+          <button onclick="sendUpdatedShiftData()">Update</button>
       </div>  
+
+      <div id="addModal" class="modal">
+          <h3>Add shift</h3></br>
+          Shift Date: <input type="text" id="addShiftDateInput" /><br /> <br />
+          Shift Starting Hour (24h format): <input type="text" id="addShiftStartInput" /><br /> <br />
+          Shift Ending Hour (24h format) <input type="text" id="addShiftEndInput" /><br /> <br />
+          <button onclick="addShift()">Add</button>
+      </div>
+
       <script lang="js">
         async function getShifts() {
           const response = await axios.get("http://localhost:3000/shifts", {
@@ -127,7 +137,7 @@
         async function submitEmployeeAllocation()
         {
           let shiftIdInput = document.getElementById("shiftIdInput");
-          shiftIdInput = shiftIdInput.value;
+          shiftIdInput = shiftIdInputAlloc.value;
           let employeeToAlloc = document.getElementById("employeesDropDown");
           employeeToAlloc = employeeToAlloc.value;
           let allocatedData= {
@@ -149,18 +159,41 @@
           shiftStartInputUpdate.value = shiftStartingHour;
           let shiftEndInputUpdate = document.getElementById("shiftEndInputUpdate");
           shiftEndInputUpdate.value = shiftEndingHour;
-          // employees = await axios.get(`http://localhost:3000/shifts?idOfShift=${shiftId}`,
-          // {headers: { 'Accept': 'application/json' }})
-          // console.log(JSON.stringify(employees.data));
-          // employees = employees.data;
-          // let dropdown = document.getElementById("employeesDropDown");
-          // dropdown.innerHTML = "";
-          // employees.forEach(employee => {
-          //   let option = document.createElement("option");
-          //   option.value = employee.idEmployee;
-          //   option.textContent = employee.nameEmployee;
-          //   dropdown.appendChild(option);
-          // });
+        }
+
+        async function sendUpdatedShiftData()//need to check this function 
+        {
+          let shiftIdInputUpdate = document.getElementById("shiftIdInputUpdate");
+          shiftIdInputUpdate = shiftIdInputUpdate.value;
+          let shiftDateInputUpdate = document.getElementById("shiftDateInputUpdate");
+          shiftDateInputUpdate = shiftDateInputUpdate.value;
+          let shiftStartInputUpdate = document.getElementById("shiftStartInputUpdate");
+          shiftStartInputUpdate = shiftStartInputUpdate.value;
+          let shiftEndInputUpdate = document.getElementById("shiftEndInputUpdate");
+          shiftEndInputUpdate = shiftEndInputUpdate.value;
+          let updatedData= {
+            shiftId: shiftIdInputUpdate,
+            shiftDate: shiftDateInputUpdate,
+            shiftStart: shiftStartInputUpdate,
+            shiftEnd: shiftEndInputUpdate
+          }
+          await axios.put(`http://localhost:3000/shifts?shiftId=${updatedData.shiftId}`, updatedData);//need to add the shift id to the url
+          getShifts();
+        }
+
+        async function addShift()
+        {
+          let shiftDateInputUpdate = document.getElementById("addShiftDateInput");
+          shiftDateInputUpdate = shiftDateInputUpdate.value;
+          let shiftStartInputUpdate = document.getElementById("addShiftStartInput");
+          shiftStartInputUpdate = shiftStartInputUpdate.value;
+          let shiftEndInputUpdate = document.getElementById("addShiftEndInput");
+          shiftEndInputUpdate = shiftEndInputUpdate.value;
+          await axios.post('http://localhost:3000/shifts', {
+            shiftDate: shiftDateInputUpdate,
+            shiftStart: shiftStartInputUpdate,
+            shiftEnd: shiftEndInputUpdate
+          });
         }
       </script>
     </body>

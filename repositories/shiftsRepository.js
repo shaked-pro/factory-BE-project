@@ -98,11 +98,32 @@ async function allocateEmployee(employeeId , shiftId) {
     }
 }
 
+async function updateShiftById(shiftId ,updateData) {
+    try {
+        const update = await Shift.updateOne({ _id: shiftId },//using a field not available for editing
+            {
+                $set: {
+                    _id: shiftId,
+                    Date: new Date(updateData.shiftDate),
+                    Starting_Hour: new Number(updateData.shiftStart),
+                    Ending_Hour: new Number(updateData.shiftEnd)
+                }
+            });
+        console.log('Update operation result:', update);
+        return update.matchedCount > 0 ? 'shift updated successfully' : null;
+    }
+    catch (error) {
+        console.log('Error updating shift'+ error);
+        throw error;
+    }
+}
+
 module.exports = {
     getShiftsByEmployee,
     getAllShifts,
     getEmployeeByShiftId,
     getEmployeeByEmployeeId,
     getEmployeeOfOtherShiftsByShiftId,
-    allocateEmployee
+    allocateEmployee,
+    updateShiftById
 }

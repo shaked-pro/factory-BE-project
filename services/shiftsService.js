@@ -66,8 +66,18 @@ async function performEmployeeAllocation(data)
   let result  = await shiftsRepo.allocateEmployee(employeeId, shiftId);
   console.log ("shifts service:"+result);
 }
+
+async function updateShift(updateData) {
+  shiftId = updateData.shiftId;
+  console.log("update data from service : "+JSON.stringify(updateData));
+  let updatedShift = await shiftsRepo.updateShiftById(shiftId,updateData);
+  console.log('updated shift from service: ' + updatedShift);
+  return updatedShift;
+}
+
 module.exports = {
   getShiftsTable,
   getEmployeesToAllocationDropDown,
-  performEmployeeAllocation
+  performEmployeeAllocation,
+  updateShift
 };

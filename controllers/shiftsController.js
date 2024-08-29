@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { getShiftsTable, getEmployeesToAllocationDropDown, performEmployeeAllocation } = require('../services/shiftsService');
+const { getShiftsTable, getEmployeesToAllocationDropDown, performEmployeeAllocation, updateShift } = require('../services/shiftsService');
 
 
 const router = express.Router();
@@ -31,8 +31,22 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req,res)=>{
   data = await req.body;
-  console.log ("alloc data from controller:"+JSON.stringify(data));
-  await performEmployeeAllocation(data);
+  console.log (data);
+  if (req.query['shiftId'])
+  {
+    console.log("alloc data from controller:" + JSON.stringify(data));
+    await performEmployeeAllocation(data);
+  }
+  else {
+    console.log("add data from controller:" + JSON.stringify(data));// add adding shift functionality
+  }
+
 })
 
+router.put('/', async (req,res)=>{
+  data = await req.body;
+  console.log ("update data from controller:"+JSON.stringify(data));
+  let updatedShift = await updateShift(data);
+  res.send(updatedShift);
+})
 module.exports = router;
