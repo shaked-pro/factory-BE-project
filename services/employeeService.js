@@ -3,7 +3,7 @@ const { getShiftsByEmployee } = require('../repositories/shiftsRepository');
 const { updateEmployeeByName } = require('../repositories/employeesRepository');
 const { getDepartmentNameByDepId } = require('../repositories/departmentRepository');
 const { addEmployee } = require('../repositories/employeesRepository');
-const { getEmployeesOfDepartment } = require('../repositories/employeesRepository');
+const { getEmployeesOfDepartment, deleteEmployeeByEmployeeId } = require('../repositories/employeesRepository');
 
 
 /* gets all the employees to the employees page (unfiltered) and adds the department name and shifts
@@ -94,10 +94,17 @@ async function FilterEmployeesByDep(depId) {
   return formattedEmployeesData;
 }
 
+async function deleteEmployee(id)
+{
+  console.log ("delete employee function in service");
+  await deleteEmployeeByEmployeeId(id);
+}
+
 module.exports = {
   getAllEmployeesToTable,
   getEmployeeDataToEdit,
   updateEmployee,
   newEmployee,
-  FilterEmployeesByDep
+  FilterEmployeesByDep,
+  deleteEmployee
 };

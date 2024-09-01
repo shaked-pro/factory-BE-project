@@ -59,16 +59,17 @@
             let updateResponse = await axios.post('http://localhost:3000/employees/editEmployee' , headers);
             console.log("updated employee from html page : "+JSON.stringify(updateResponse.data));
         }
-        // async function deleteEmployee() //deletes an employee along with it's shifts
-        // {
-        //     let params = new URLSearchParams(window.location.search);
-        //     let currentEmployeeName = params.get('name');
-        //     let headers={
-        //         'shiftsgetter': true,
-        //         'name':currentEmployeeName
-        //     }
-        //     let shiftobjects = axios.get('http://localhost:3000/employees/editEmployee', {headers});
-        // }
+
+        async function deleteEmployee() //deletes an employee along with it's shifts
+        {
+            let params = new URLSearchParams(window.location.search);
+            let currentEmployeeId = params.get('employeeid');
+            // let employee={
+            //     'shiftgetter': true,
+            //     'DeleteEmployeeId':currentEmployeeId
+            // }
+            let shiftobjects = await axios.get(`http://localhost:3000/employees/editEmployee?DeleteEmployeeId=${currentEmployeeId}`);
+        }
     </script>
 </body>
 

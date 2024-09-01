@@ -81,21 +81,28 @@ async function addEmployee(employeeData) {
     }
 }
 
-// async function deleteEmployee(employeeId , shifts)
-// {
-
+// async function findEmployeesByDepIdAndDelete(depid) {
+//     let relevantEmployees = await Employee.deleteMany({ Department_id: depid });//will add an operation to update the shifts later
+//     if (relevantEmployees) {
+//         console.log("relevant employees were deleted");
+//         return true;
+//     }
+//     else {
+//         console.log("relevant employees weren't deleted");
+//         return false;
+//     }
 // }
-async function findEmployeesByDepIdAndDelete(depid) {
-    let relevantEmployees = await Employee.deleteMany({ Department_id: depid });//will add an operation to update the shifts later
-    if (relevantEmployees) {
-        console.log("relevant employees were deleted");
-        return true;
+
+async function deleteEmployeeByEmployeeId(employeeId) {
+    try {
+        const result = await Employee.deleteOne({ _id: employeeId });
+        console.log("employee deleted from db: " + JSON.stringify(result));
     }
-    else {
-        console.log("relevant employees weren't deleted");
-        return false;
+    catch (error) {
+        console.log("error deleting employee from db: " + error);
     }
 }
+
 async function getEmployeesOfDepartment(departmentId) {
     let employees = await Employee.find({ Department_id: departmentId })
     console.log("Repository :employees of department = " + JSON.stringify(employees));
@@ -107,7 +114,8 @@ module.exports = {
     getEmployeeByName,
     updateEmployeeByName,
     addEmployee,
-    findEmployeesByDepIdAndDelete,
+    //findEmployeesByDepIdAndDelete,
     getEmployeesOfDepartment,
-    getEmployeeById
+    getEmployeeById,
+    deleteEmployeeByEmployeeId
 }

@@ -67,6 +67,10 @@ router.get('/editEmployee', async (req, res) => {
     let data = await employeeService.getEmployeeDataToEdit(req.query["employeeid"]);
     return res.send(data);
   }
+  else if (req.query["DeleteEmployeeId"]) {
+    console.log("delete employee id: " + req.query["DeleteEmployeeId"]);
+    let data = await employeeService.deleteEmployee(req.query["DeleteEmployeeId"]);
+  }
 });
 router.post('/editEmployee', async (req, res) => {
   let body = await req.body;
