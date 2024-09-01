@@ -68,11 +68,7 @@
           for (let i = 0; i < Object.keys(data).length; i++) {
             let row = table.insertRow();
             for (let key in data[i]) {
-              if (key === 'Starting_Hour' || key == 'Ending_Hour')
-              {
-                continue;
-              }
-              else if (key === 'Date')
+              if (key === 'Starting_Hour' || key == 'Ending_Hour' || key === 'Date' || key === '__v')
               {
                 continue;
               }
@@ -194,6 +190,7 @@
             shiftStart: shiftStartInputUpdate,
             shiftEnd: shiftEndInputUpdate
           });
+          getShifts();
         }
       </script>
     </body>

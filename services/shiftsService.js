@@ -75,9 +75,16 @@ async function updateShift(updateData) {
   return updatedShift;
 }
 
+async function addNewShift(shiftData) {
+  let newShift = await shiftsRepo.createShift(shiftData);
+  console.log('new shift from service: ' + newShift);
+  return newShift;
+}
+
 module.exports = {
   getShiftsTable,
   getEmployeesToAllocationDropDown,
   performEmployeeAllocation,
-  updateShift
+  updateShift, 
+  addNewShift
 };

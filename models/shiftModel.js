@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const shiftSchema = new Schema({
   _id: Schema.Types.ObjectId,
   Date : Date,
-  starting_hour: Number,
-  ending_hour: Number
+  Starting_Hour: Number,
+  Ending_Hour: Number
 });
 
 const Shift = mongoose.model('Shifts', shiftSchema);

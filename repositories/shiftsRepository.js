@@ -118,6 +118,24 @@ async function updateShiftById(shiftId ,updateData) {
     }
 }
 
+async function createShift(shiftData)
+{   
+    let newId = new mongoose.Types.ObjectId();
+    let newShift = new Shift({
+        _id: newId,
+        Date: new Date(shiftData.shiftDate),
+        Starting_Hour:new Number(shiftData.shiftStart),
+        Ending_Hour:new Number(shiftData.shiftEnd)
+    });
+    try {
+        const result = await newShift.save();
+        return result;
+    }
+    catch (err) {
+        console.log("couldn't create new shift " + err);
+    }
+}
+
 module.exports = {
     getShiftsByEmployee,
     getAllShifts,
@@ -125,5 +143,6 @@ module.exports = {
     getEmployeeByEmployeeId,
     getEmployeeOfOtherShiftsByShiftId,
     allocateEmployee,
-    updateShiftById
+    updateShiftById,
+    createShift
 }

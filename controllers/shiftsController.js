@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { getShiftsTable, getEmployeesToAllocationDropDown, performEmployeeAllocation, updateShift } = require('../services/shiftsService');
+const { getShiftsTable, getEmployeesToAllocationDropDown, performEmployeeAllocation, updateShift, addNewShift } = require('../services/shiftsService');
 
 
 const router = express.Router();
@@ -39,6 +39,8 @@ router.post('/', async (req,res)=>{
   }
   else {
     console.log("add data from controller:" + JSON.stringify(data));// add adding shift functionality
+    let newShiftAdded =await addNewShift(data);
+    res.send(newShiftAdded);
   }
 
 })
