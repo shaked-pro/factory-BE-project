@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req,res)=>{
   data = await req.body;
   console.log (data);
-  if (req.query['shiftId'])
+  if (req.query['idOfShift'])
   {
     console.log("alloc data from controller:" + JSON.stringify(data));
     await performEmployeeAllocation(data);

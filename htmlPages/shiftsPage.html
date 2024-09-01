@@ -140,7 +140,7 @@
             shift: shiftIdInput,
             employee: employeeToAlloc
           }
-          axios.post('http://localhost:3000/shifts', allocatedData);
+          await axios.post(`http://localhost:3000/shifts?idOfShift=${shiftIdInput}`, allocatedData);
           getShifts();
         }
 
