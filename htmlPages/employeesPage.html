@@ -136,8 +136,8 @@
     //Returning the user to the login screen
     async function logout() {
       console.log("got to the logout function");
-      await axios.get('http://localhost:3000/users');
-      location.href = 'http://localhost:3000/';
+      localStorage.clear()
+      window.location = '/login';
     }
     //Redirecting to new employee page
     async function addEmployeeRedirect() {
