@@ -44,11 +44,15 @@
     //getting all employees from db
     async function getEmployees() {
       console.log('sending request to employeeController');
+      console.log(`Bearer ${localStorage.userToken}`)
       let employeeAndShiftsData;
       // let headers = {
       //   "collectemployeedata": "true"
       // }
-      employeeAndShiftsData = await axios.get(`http://localhost:3000/employees?getemployees=${true}`);
+      employeeAndShiftsData = await axios.get(`http://localhost:3000/employees?getemployees=${true}`,
+      { headers : {
+        'Authorization': `Bearer ${localStorage.userToken}`
+    }});
       employeeAndShiftsData = employeeAndShiftsData.data;
       console.log(
         "employeeData:" + typeof employeeAndShiftsData + "employeeData[1]=" + JSON.stringify(employeeAndShiftsData)

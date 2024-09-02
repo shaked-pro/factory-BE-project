@@ -8,15 +8,15 @@ async function verifyMyToken(token) {
       return false;
     } else {
       console.log("token verified");
-      return true;
+      return success;
     }
   });
 };
-async function logOutToLoginPage()
-{
+
+async function logOutToLoginPage() {
   app.get('/', (req, res) => {
     res.sendFile(__dirname + '/htmlPages/loginPage.html');
   });
 }
 
-module.exports = {verifyMyToken};
+module.exports = { verifyMyToken };

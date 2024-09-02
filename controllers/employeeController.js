@@ -3,6 +3,7 @@ const path = require('path');
 
 const employeeService = require('../services/employeeService');
 const commonUsage = require('../commonUsage');
+const { verify } = require('crypto');
 
 const router = express.Router();
 
@@ -11,23 +12,8 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   console.log(`params: ${JSON.stringify(req.query)}`)
   let headers = await req.headers;
-  console.log(headers);
-
-  //auth functionality
-  if (headers['authorization'] != null) {
-    //accessing common to verify the token 
-    const passedToken = headers['authorization'];
-    const tokenMatch = passedToken ? passedToken.match(/Bearer\s+([^\s]+)/) : null;
-    console.log("tokenMatch?", tokenMatch);
-    const token = tokenMatch ? tokenMatch[1] : null;
-    const varified = await commonUsage.verifyMyToken(token);
-    if (varified) {
-      return res.send(varified);
-    }
-    else {
-      console.log("not allowed");
-    }
-  }
+  console.log(`headers: ${JSON.stringify(headers)}`);
+  console.log(`req.user: ${JSON.stringify(req.user)}`)
 
   //departmentFilter functionality
   if (req.query["department"]) {

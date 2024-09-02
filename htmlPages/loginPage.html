@@ -23,7 +23,7 @@
       const token = response.data.token;
       console.log("Response:" + response);
       console.log("Token:" + token);
-      localStorage.setItem("userToken", JSON.stringify(token));
+      localStorage.setItem("userToken", token);
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
