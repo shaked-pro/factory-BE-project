@@ -1,6 +1,7 @@
 <html>
 
 <body onload="getEmployees()">
+  <h3 id="username"></h3>
   <h1>Employees</h1>
 
   <table id="mongoTable">
@@ -43,12 +44,10 @@
 
     //getting all employees from db
     async function getEmployees() {
+      getUser();
       console.log('sending request to employeeController');
       console.log(`Bearer ${localStorage.userToken}`)
       let employeeAndShiftsData;
-      // let headers = {
-      //   "collectemployeedata": "true"
-      // }
       employeeAndShiftsData = await axios.get(`http://localhost:3000/employees?getemployees=${true}`,
       { headers : {
         'Authorization': `Bearer ${localStorage.userToken}`
@@ -135,18 +134,24 @@
       await generateTable(tableBody, departmentEmployees);
     }
 
+    async function getUser() {
+      let hiUser = document.getElementById("username");
+      let user = await axios.get(`http://localhost:3000/employees?getuser=${true}`,{headers :{'Authorization': `Bearer ${localStorage.userToken}`}});
+      hiUser.textContent = "Hi " + user.data;
+    }
+
     /*REDIRECT FUNCTIONS*/
 
     //Returning the user to the login screen
     async function logout() {
       console.log("got to the logout function");
       localStorage.clear()
-      window.location = '/login';
+      window.location = '/';
     }
     //Redirecting to new employee page
     async function addEmployeeRedirect() {
       console.log("got to the new employee redirect func");
-      location.href = 'http://localhost:3000/employees/addemployees'
+      window.location = '/employees/addemployees';
     }
     //Redirecting to edit employee page
     async function goToEditEmployeePage(id) {

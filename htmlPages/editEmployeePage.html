@@ -6,6 +6,7 @@
 </head>
 
 <body onload="getRelevantEmployeeData()">
+    <h3 id = "username"><h3>
     <h1>Edit Employee</h1>
     Employee ID = <input type="text" id="id" /><br /> <br />
     First Name = <input type="text" id="firstName"><br /><br />
@@ -18,6 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         async function getRelevantEmployeeData() { //presenting the selected employee on the form
+            getUser();
             let params = new URLSearchParams(window.location.search); // Getting the selected employee id
             let currentEmployeeId = params.get('employeeid');
             console.log('Current Employee : ' + currentEmployeeId);
@@ -28,7 +30,9 @@
             }
 
             try {
-                let response = await axios.get(`http://localhost:3000/employees/editEmployee?employeeid=${currentEmployeeId}`);
+                let response = await axios.get(`http://localhost:3000/employees/editEmployee?employeeid=${currentEmployeeId}`,{headers : {
+                    'Authorization': `Bearer ${localStorage.userToken}`
+                }});
                 let currentEmployeeData = response.data;
 
                 document.getElementById('id').value = currentEmployeeData._id; // Placing the values
@@ -44,7 +48,8 @@
             let params = new URLSearchParams(window.location.search); // Getting the selected employee id
             let currentEmployeeId = params.get('employeeid');
 
-            let response = await axios.get(`http://localhost:3000/employees/editEmployee?employeeid=${currentEmployeeId}`);
+            let response = await axios.get(`http://localhost:3000/employees/editEmployee?employeeid=${currentEmployeeId}`,{headers : {
+                    'Authorization': `Bearer ${localStorage.userToken}`}});
             let currentEmployeeData = response.data;
             let lastName = currentEmployeeData.Last_Name;
             console.log ("employeeLastName:" + lastName)
@@ -69,6 +74,12 @@
             //     'DeleteEmployeeId':currentEmployeeId
             // }
             let shiftobjects = await axios.get(`http://localhost:3000/employees/editEmployee?DeleteEmployeeId=${currentEmployeeId}`);
+        }
+
+        async function getUser() {
+            let hiUser = document.getElementById("username");
+            let user = await axios.get(`http://localhost:3000/employees?getuser=${true}`,{headers :{'Authorization': `Bearer ${localStorage.userToken}`}});
+            hiUser.textContent = "Hi " + user.data;
         }
     </script>
 </body>

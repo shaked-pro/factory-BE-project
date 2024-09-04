@@ -7,7 +7,7 @@
   </body>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    const url = "http://localhost:3000/auth/login";
+    //const url = "http://localhost:3000/auth/login";
 
     async function login() {
       const loginData = {
@@ -38,6 +38,9 @@
           "allowed and response : " + allowed.data + " " + response.data.success
         );
         location.href = "http://localhost:3000/home";
+      }
+      else {
+        alert("Invalid credentials");
       }
     }
   </script>

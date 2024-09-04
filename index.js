@@ -20,13 +20,12 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/htmlPages/loginPage.html');
 });
-
-// add auth middleware
+//auth middleware
 app.use(async (req, res, next) => {
-  if (req.path === '/' || req.headers['accept'].includes('text/html')) {
+  if (req.path === '/users' || req.headers['accept'].includes('text/html')) {
     return next();
   }
-  if (req.headers['authorization'] != null) {
+  if (req.headers['authorization'] != null ) {
     const passedToken = req.headers['authorization'];
     const tokenMatch = passedToken ? passedToken.match(/Bearer\s+([^\s]+)/) : null;
     const token = tokenMatch ? tokenMatch[1] : null;
@@ -40,7 +39,7 @@ app.use(async (req, res, next) => {
     } else {
       return res.sendStatus(401);
     }
-  } else {
+  } else{
     return res.sendStatus(401);
   }
 });

@@ -10,11 +10,15 @@ const router = express.Router();
 // Entry point: http://localhost:3000/employees
 
 router.get('/', async (req, res) => {
-  console.log(`params: ${JSON.stringify(req.query)}`)
   let headers = await req.headers;
   console.log(`headers: ${JSON.stringify(headers)}`);
   console.log(`req.user: ${JSON.stringify(req.user)}`)
 
+  //get user functionality
+  if (req.query['getuser']) {
+    console.log("get user request");
+    return res.send(req.user["username"]);
+  }
   //departmentFilter functionality
   if (req.query["department"]) {
     let departmentFilter = req.query["department"];
