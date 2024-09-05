@@ -1,5 +1,5 @@
 <html>
-  <body>
+  <body onload="getUser()">
     <h1>Welcome!</h1>
 
     <button onclick="redirectToDepartmentsPage()">Department Page</button>
@@ -7,6 +7,8 @@
     <button onclick="redirectToShiftsPage()">Shifts Page</button>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+      
+      //Redirect functions
       async function redirectToDepartmentsPage() {
         window.location.href = "/departments";
       }

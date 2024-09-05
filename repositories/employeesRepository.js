@@ -1,6 +1,7 @@
 //here we will get the employee data from the DB.
 const path = require('path');
 const Employee = require(path.resolve('models/employeeModel'));
+const EmployeeShift = require(path.resolve('models/shiftEmployeeModel'));
 const { MongoClient } = require('mongodb')
 const mongoose = require('mongoose');
 const { getDepartmentByDepName } = require('../repositories/departmentRepository');
@@ -95,7 +96,8 @@ async function addEmployee(employeeData) {
 
 async function deleteEmployeeByEmployeeId(employeeId) {
     try {
-        const result = await Employee.deleteOne({ _id: employeeId });
+        const result = await Employee.deleteOne({ _id: employeeId }); //deleting employee 
+        let shiftDelete = await EmployeeShift.deleteMany({ employee_id: employeeId }); //deleting employee from shifts
         console.log("employee deleted from db: " + JSON.stringify(result));
     }
     catch (error) {
