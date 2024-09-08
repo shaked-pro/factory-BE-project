@@ -27,7 +27,8 @@
             }
 
             try {
-                const response = await axios.get(`http://localhost:3000/departments/editDepartment?department=${department}`);
+                const response = await axios.get(`http://localhost:3000/departments/editDepartment?department=${department}`,{headers:
+            { 'authorization': `Bearer ${localStorage.userToken}` }});
                 const departmentData = response.data;
                 console.log ("html:Department data :" + response.data);
                 console.log (departmentData._id);
@@ -48,7 +49,8 @@
                 'managerId': document.getElementById('manager').value,
                 'departmentName': document.getElementById('name').value
             };
-            let updateResponse = await axios.put(`http://localhost:3000/departments/editDepartment?updateDepartmentId=${departmentid}`, updateData);
+            let updateResponse = await axios.put(`http://localhost:3000/departments/editDepartment?updateDepartmentId=${departmentid}`, 
+                updateData , {headers:{ 'authorization': `Bearer ${localStorage.userToken}` }});
             console.log("updated Department from html page : " + JSON.stringify(updateResponse.data));
         }
          async function DeleteDep() {
@@ -59,7 +61,8 @@
                 let dataParams = {
                     departmentid: departmentId
                 };
-                let deleteResponse = await axios.delete('http://localhost:3000/departments/editDepartment', {data:dataParams});
+                let deleteResponse = await axios.delete('http://localhost:3000/departments/editDepartment', {data:dataParams} , {headers:
+                    { 'authorization': `Bearer ${localStorage.userToken}` }});
                 if (deleteResponse==true)
                 {
                     alert ("department was deleted successfully!");

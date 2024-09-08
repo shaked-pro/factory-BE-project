@@ -127,7 +127,8 @@
     async function handleDropdownChange() {
       let selectedDepartment = document.getElementById("dropdown").value;
       console.log ("dropdown selection : "+selectedDepartment);
-      let departmentEmployees =await axios.get (`http://localhost:3000/employees?department=${selectedDepartment}`);
+      let departmentEmployees =await axios.get (`http://localhost:3000/employees?department=${selectedDepartment}`,{headers:
+            { 'authorization': `Bearer ${localStorage.userToken}` }});
       console.log (JSON.stringify(departmentEmployees));
       departmentEmployees = departmentEmployees.data;
       let tableBody = document.querySelector("#mongoTable tbody");
@@ -159,7 +160,7 @@
     }
     //Redirecting to edit department page
     async function goToEditDepartmentPage(departmentid) {
-      window.location.href = `http://localhost:3000/departments/editDepartment?department=${departmentid}`;
+      window.location.href = `http://localhost:3000/departments/editDepartment?departmentId=${departmentid}`;
     }
   </script>
 </body>

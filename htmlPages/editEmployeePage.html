@@ -69,10 +69,6 @@
         {
             let params = new URLSearchParams(window.location.search);
             let currentEmployeeId = params.get('employeeid');
-            // let employee={
-            //     'shiftgetter': true,
-            //     'DeleteEmployeeId':currentEmployeeId
-            // }
             let shiftobjects = await axios.get(`http://localhost:3000/employees/editEmployee?DeleteEmployeeId=${currentEmployeeId}`,{headers :
                 {'Authorization': `Bearer ${localStorage.userToken}`}});
         }

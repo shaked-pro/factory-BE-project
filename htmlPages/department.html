@@ -37,7 +37,8 @@
         async function getDepartments() {
             console.log('sending request to Department controller');
             let departmentsData;
-            departmentsData = await axios.get('http://localhost:3000/departments');
+            departmentsData = await axios.get('http://localhost:3000/departments',{headers:
+            { 'authorization': `Bearer ${localStorage.userToken}` }});
             departmentsData = departmentsData.data;
             console.log("departmentData:" + typeof departmentsData + "departmentData[1]=" + JSON.stringify(departmentsData));
 
