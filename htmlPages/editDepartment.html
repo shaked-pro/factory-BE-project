@@ -56,13 +56,15 @@
          async function DeleteDep() {
                 let params = new URLSearchParams(window.location.search);
                 let departmentId = document.getElementById('id').value;
-                console.log('department id = ' + departmentId);
+                console.log('delete department id = ' + departmentId);
 
                 let dataParams = {
                     departmentid: departmentId
                 };
-                let deleteResponse = await axios.delete('http://localhost:3000/departments/editDepartment', {data:dataParams} , {headers:
-                    { 'authorization': `Bearer ${localStorage.userToken}` }});
+                let deleteResponse = await axios.delete('http://localhost:3000/departments/editDepartment' , 
+                    {headers:
+                        { 'authorization': `Bearer ${localStorage.userToken}` },
+                    data: dataParams});
                 if (deleteResponse==true)
                 {
                     alert ("department was deleted successfully!");

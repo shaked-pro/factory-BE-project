@@ -64,11 +64,11 @@ async function getDepartmentByDepId(depid) {
 
 async function deleteDepartment(depid)
 {
-    let employeeRepositoryRes = await employeeRepository.findEmployeesByDepIdAndDelete(depid)
-    if (employeeRepositoryRes)
+    let employeeDeleteSuccess = await deleteEmployeeByDepId(depid);// finds and deletes all employees of the department
+    if (employeeDeleteSuccess) //if the employees were deleted successfully
         {
-            const result = await Department.findByIdAndDelete(depid);
-            if (result) //if the department is deleted result contains the deleted document, checking if the deletion was successful
+            const result = await Department.deleteOne({_id:depid});
+            if (result.deleteCount > 0) 
             {
                 console.log('delete department was completed successfully!');
                 return true;
@@ -83,6 +83,20 @@ async function deleteDepartment(depid)
         console.log ("error deleting department");//there is no empty department therefore no need to delete one
         return false;
     }    
+}
+
+async function deleteEmployeeByDepId(depId) {
+    try {
+        const result = await Employee.deleteMany({ Department_id: depId }); //deleting employees 
+        console.log("employees of Department deleted from db: " + JSON.stringify(result));
+        if (result.deletedCount > 0) {
+            return true;
+        }
+    }
+    catch (error) {
+        console.log("error deleting employee from db: " + error);
+        return false;
+    }
 }
 
 module.exports = {

@@ -54,14 +54,14 @@
             let lastName = currentEmployeeData.Last_Name;
             console.log ("employeeLastName:" + lastName)
 
-            let headers= {
-            'originallastname' : lastName, 
-            'newId' : document.getElementById('id').value,  // getting the new values
-            'newFirst' : document.getElementById('firstName').value,
-            'newYear' : document.getElementById('year').value,
-            'newDep' : document.getElementById('department').value 
+            let data = { //sending the new values to the server 
+                'originallastname' : lastName, 
+                'newId' : document.getElementById('id').value,  // getting the new values
+                'newFirst' : document.getElementById('firstName').value,
+                'newYear' : document.getElementById('year').value,
+                'newDep' : document.getElementById('department').value
             };
-            let updateResponse = await axios.post('http://localhost:3000/employees/editEmployee' , headers);
+            let updateResponse = await axios.post('http://localhost:3000/employees/editEmployee' , data,{headers : {'Authorization': `Bearer ${localStorage.userToken}`}});
             console.log("updated employee from html page : "+JSON.stringify(updateResponse.data));
         }
 

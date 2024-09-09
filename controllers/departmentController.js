@@ -53,7 +53,8 @@ router.delete('/editDepartment' , async(req,res)=>
     if (depid!=null)
         {
             let success = await departmentService.deleteDepartmentByDepId(depid);
-            res.send(true);
+            console.log ("controller: department delation result: "+success);
+            res.send(success);
         }
     else 
     {

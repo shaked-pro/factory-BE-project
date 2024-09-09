@@ -82,22 +82,12 @@ async function addEmployee(employeeData) {
     }
 }
 
-// async function findEmployeesByDepIdAndDelete(depid) {
-//     let relevantEmployees = await Employee.deleteMany({ Department_id: depid });//will add an operation to update the shifts later
-//     if (relevantEmployees) {
-//         console.log("relevant employees were deleted");
-//         return true;
-//     }
-//     else {
-//         console.log("relevant employees weren't deleted");
-//         return false;
-//     }
-// }
-
 async function deleteEmployeeByEmployeeId(employeeId) {
     try {
-        const result = await Employee.deleteOne({ _id: employeeId }); //deleting employee 
-        let shiftDelete = await EmployeeShift.deleteMany({ employee_id: employeeId }); //deleting employee from shifts
+        const result = await Employee.deleteOne({ _id: employeeId }); //deleting employee
+        if (result.deletedCount === 1) {
+            await EmployeeShift.deleteMany({ employee_id: employeeId }); //deleting employee from shifts
+        }
         console.log("employee deleted from db: " + JSON.stringify(result));
     }
     catch (error) {
@@ -116,7 +106,6 @@ module.exports = {
     getEmployeeByName,
     updateEmployeeByName,
     addEmployee,
-    //findEmployeesByDepIdAndDelete,
     getEmployeesOfDepartment,
     getEmployeeById,
     deleteEmployeeByEmployeeId

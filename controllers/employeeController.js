@@ -48,7 +48,8 @@ router.get('/editEmployee', async (req, res) => {
   console.log(headers);
 
   //redirect functionality
-  if (headers['referer'] != null && (headers['referer'].includes('http://localhost:3000/departments') || headers['referer'] === 'http://localhost:3000/employees')) {
+  if (headers['referer'] != null && (headers['accept'].includes('text/html'))) //|| headers['referer'] === 'http://localhost:3000/employees')) 
+  {
     return res.sendFile(path.resolve('htmlPages/editEmployeePage.html'));
   }
 
